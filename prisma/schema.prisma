@@ -30,7 +30,9 @@ model Service {
   id          Int          @id @default(autoincrement())
   name        String
   duration    Int
-  imageUrl    String?     
+  imageUrl    String?
+  price       BigInt
+  description String     
   branchId    Int
   branch      Branch       @relation(fields: [branchId], references: [id])
   reservations Reservation[]
