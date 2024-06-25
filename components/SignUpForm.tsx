@@ -9,8 +9,9 @@ import Loading from "./Loading";
 const SignUp: React.FC = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
+  const [fullName, setFullName] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [toast, setToast] = useState<ToastState>({
     isOpen: false,
@@ -19,9 +20,9 @@ const SignUp: React.FC = () => {
   });
   const [loading, setLoading] = useState<boolean>(false);
 
-  const validateUsername = (username: string): string => {
-    if (username.length < 3) {
-      return "Username must be at least 3 characters long.";
+  const validateFullName = (fullName: string): string => {
+    if (fullName.length < 3) {
+      return "fullName must be at least 3 characters long.";
     }
     return "";
   };
@@ -33,16 +34,35 @@ const SignUp: React.FC = () => {
     return "";
   };
 
+  const validatePassword = (password: string): string => {
+    if (password.length < 8) {
+      return "Password must be at least 8 characters long";
+    }
+    return "";
+  };
+
+  const validatePhone = (phone: string): string => {
+    if (!/^\d+$/.test(phone)) {
+      return "Phone number must contain only digits";
+    }
+    if (phone.length < 10) {
+      return "Phone number must be valid (> 10 characters)";
+    }
+    return "";
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const usernameError = validateUsername(username);
+    const fullNameError = validateFullName(fullName);
     const emailError = validateEmail(email);
+    const phoneError = validatePhone(phone);
+    const passwordError = validatePassword(password);
 
-    if (usernameError || emailError) {
+    if (fullNameError || emailError || passwordError || phoneError) {
       setToast({
         isOpen: true,
-        message: usernameError || emailError,
+        message: fullNameError || emailError || passwordError || phoneError,
         type: "error",
       });
       return;
@@ -50,17 +70,22 @@ const SignUp: React.FC = () => {
 
     setLoading(true);
     try {
-      const response = await fetch("/api/user", {
+      const response = await fetch("/api/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, username, password }),
+        body: JSON.stringify({ email, fullName, phone, password }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
+        setToast({
+            isOpen: true,
+            message: "Signup successful!",
+            type: "success",
+          });
         router.push("/signin");
       } else {
         const errorMessage = data.errors
@@ -89,10 +114,10 @@ const SignUp: React.FC = () => {
         <div className="text-4xl mb-6 font-bold">Sign Up</div>
         <div className="flex flex-col space-y-6 font-normal w-full">
           <input
-            placeholder="Username"
+            placeholder="fullName"
             className="py-4 px-5 w-full sm:w-[350px] text-black rounded-md"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
             required
           />
           <input
@@ -100,6 +125,13 @@ const SignUp: React.FC = () => {
             className="py-4 px-5 w-full sm:w-[350px] text-black rounded-md"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            placeholder="Phone Number"
+            className="py-4 px-5 w-full sm:w-[350px] text-black rounded-md"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
             required
           />
           <div className="relative w-full sm:w-[350px]">
