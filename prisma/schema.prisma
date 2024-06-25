@@ -14,49 +14,82 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  fullName  String
-  email     String    @unique
-  phone     String    @unique
-  password  String
-  role      Role
-  reviews   Review[]
+  id          Int          @id @default(autoincrement())
+  fullName    String
+  email       String       @unique
+  phone       String       @unique
+  password    String
+  role        Role
+  reviews     Review[]
   reservations Reservation[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
 
 model Service {
-  id        Int       @id @default(autoincrement())
-  name      String
-  duration  Int       
-  branchId  Int
-  branch    Branch    @relation(fields: [branchId], references: [id])
+  id          Int          @id @default(autoincrement())
+  name        String
+  duration    Int
+  imageUrl    String?     
+  branchId    Int
+  branch      Branch       @relation(fields: [branchId], references: [id])
   reservations Reservation[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
 
 model Review {
-  id        Int       @id @default(autoincrement())
-  customerId Int
-  customer  User      @relation(fields: [customerId], references: [id])
-  starRating Int
-  comment   String
+  id          Int          @id @default(autoincrement())
+  customerId  Int
+  customer    User         @relation(fields: [customerId], references: [id])
+  starRating  Int
+  comment     String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([customerId])
 }
 
 model Reservation {
-  id          Int       @id @default(autoincrement())
+  id          Int          @id @default(autoincrement())
   userId      Int
   serviceId   Int
+  branchId    Int
   date        DateTime
-  user        User      @relation(fields: [userId], references: [id])
-  service     Service   @relation(fields: [serviceId], references: [id])
+  user        User         @relation(fields: [userId], references: [id])
+  service     Service      @relation(fields: [serviceId], references: [id])
+  branch      Branch       @relation(fields: [branchId], references: [id]) 
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([userId])
+  @@index([serviceId])
+  @@index([branchId])
 }
 
 model Branch {
-  id          Int       @id @default(autoincrement())
+  id          Int          @id @default(autoincrement())
   name        String
   location    String
+  phone       String
   openingTime DateTime
   closingTime DateTime
   services    Service[]
+  stylists    Stylist[]
+  reservations Reservation[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@unique([name, location])
+}
+
+model Stylist {
+  id          Int          @id @default(autoincrement())
+  name        String
+  branchId    Int
+  branch      Branch       @relation(fields: [branchId], references: [id])
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
 
 enum Role {
