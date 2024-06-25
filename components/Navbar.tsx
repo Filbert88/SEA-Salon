@@ -4,6 +4,7 @@ import Link from "next/link";
 import NavbarLink from "./NavbarLink";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
 import NavbarmobileLink from "./NavbarmobileLink";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const navLinkarr = [
   {
@@ -25,6 +26,7 @@ const navLinkarr = [
 ];
 
 const Navbar = () => {
+  const { data: session } = useSession();
   const [openNavbar, setOpenNavbar] = useState(false);
   const [navbarBg, setNavbarBg] = useState("bg-transparent");
   const [isMobile, setIsMobile] = useState(false);
@@ -75,6 +77,27 @@ const Navbar = () => {
     setOpenNavbar(false);
   };
 
+  const handleSignOut = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    await signOut();
+  };
+
+  const authButton = session ? (
+    <button
+      onClick={handleSignOut}
+      className="font-spacemono ml-2 lg:ml-4 border-2 border-[#64ffda] text-[#64ffda] lg:text-[17px] rounded-lg px-5 py-3 hover:scale-110 transition-all duration-300 hover:shadow-[3px_3px_0px_0px_#64ffda]"
+    >
+      Sign Out
+    </button>
+  ) : (
+    <Link
+      href="/signin"
+      className="font-spacemono ml-2 lg:ml-4 border-2 border-[#64ffda] text-[#64ffda] lg:text-[17px] rounded-lg px-5 py-3 hover:scale-110 transition-all duration-300 hover:shadow-[3px_3px_0px_0px_#64ffda]"
+    >
+      Sign In
+    </Link>
+  );
+
   return (
     <nav
       id="navbar"
@@ -113,18 +136,7 @@ const Navbar = () => {
                 <NavbarLink navlink={link.path} value={link.link} />
               </li>
             ))}
-            <li>
-              <Link
-                href="/signin"
-                className={`font-spacemono ml-2 lg:ml-4 border-2 border-[#64ffda] text-[#64ffda] lg:text-[17px] rounded-lg px-5 py-3 ${
-                  isMobile
-                    ? ""
-                    : "hover:scale-110 transition-all duration-300 hover:shadow-[3px_3px_0px_0px_#64ffda]"
-                }`}
-              >
-                Sign In
-              </Link>
-            </li>
+            <li>{authButton}</li>
           </ul>
         </div>
       </div>
