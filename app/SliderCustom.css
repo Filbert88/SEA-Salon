@@ -1,0 +1,12 @@
+.slick-slide {
+    padding: 0 2px; /* Adjust the padding as needed to control the gap between slides */
+  }
+  
+  .slick-list {
+    margin: 0 100px; /* Adjust the margin to match the padding for proper alignment */
+  }
+  
+  .slick-prev, .slick-next {
+    z-index: 1; /* Ensure navigation arrows are above the slides */
+  }
+  
