@@ -1,5 +1,8 @@
 import React from "react";
 import Link from "next/link";
+import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import { db } from "@/lib/db";
 
 interface BranchCardProps {
   branchName: string;
@@ -7,10 +10,10 @@ interface BranchCardProps {
   href: string;
 }
 
-export default function BranchCard({
+export default async function BranchCard({
   branchName,
   branchLocation,
-  href
+  href,
 }: BranchCardProps) {
   return (
     <Link href={`/branch/${href}`} className="w-full">
