@@ -1,9 +1,8 @@
 import Image from "next/image";
 import HomePage from "./home/page";
-import MainService from "@/components/MainService";
 import MainServiceWrapper from "./main-service/page";
 import ReviewPage from "./review/page";
-import Contact from "@/components/Contact";
+import Contact from "@/components/Contact/Contact";
 
 export default function Home() {
   return (

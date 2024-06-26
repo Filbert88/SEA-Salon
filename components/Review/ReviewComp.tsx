@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
-import Review from "@/components/Review";
+import Review from "@/components/Review/Review";
 import StarRating from "@/components/starRating";
 import Modal from "@/components/Modal";
 import { useSession } from "next-auth/react";
@@ -21,7 +21,7 @@ interface ReviewCompProps {
   initialReviews: Review[];
 }
 
-export default function ReviewComp({initialReviews}:ReviewCompProps) {
+export default function ReviewComp({ initialReviews }: ReviewCompProps) {
   const { data: session } = useSession();
   const [reviews, setReviews] = useState(initialReviews);
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -41,13 +41,13 @@ export default function ReviewComp({initialReviews}:ReviewCompProps) {
         body: JSON.stringify({
           starRating: userRating,
           comment: reviewText,
-          customerId: session?.user.id, 
+          customerId: session?.user.id,
         }),
       });
 
       if (response.ok) {
         const newReview = await response.json();
-        setReviews(prevReviews => [...prevReviews, newReview])
+        setReviews((prevReviews) => [...prevReviews, newReview]);
         setReviewText("");
         setUserRating(0);
         closeModal();

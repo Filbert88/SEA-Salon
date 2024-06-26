@@ -1,7 +1,7 @@
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { db } from "@/lib/db";
-import MainServicePage from "@/components/MainServicePage";
+import MainServicePage from "@/components/Service/MainServicePage";
 
 export default async function MainServiceWrapper() {
   const services = await db.service.findMany({
@@ -17,7 +17,5 @@ export default async function MainServiceWrapper() {
     new Map(services.map((service) => [service.name, service])).values()
   );
 
-  return(
-    <MainServicePage services={uniqueServices} />
-  )
+  return <MainServicePage services={uniqueServices} />;
 }

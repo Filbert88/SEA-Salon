@@ -2,7 +2,7 @@ import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
-import ReviewComp from "@/components/ReviewComp";
+import ReviewComp from "@/components/Review/ReviewComp";
 
 export default async function reviewPage() {
   const session = await getServerSession(authOptions);
@@ -17,7 +17,5 @@ export default async function reviewPage() {
     },
   });
 
-  return(
-    <ReviewComp initialReviews={reviews}/>
-  )
+  return <ReviewComp initialReviews={reviews} />;
 }

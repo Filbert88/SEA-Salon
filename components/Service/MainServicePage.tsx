@@ -1,7 +1,7 @@
 "use client"
 import React from 'react';
 import Slider from 'react-slick';
-import MainServiceComponent from '@/components/MainService';
+import MainServiceComponent from './MainService';
 
 interface service{
   name:string;

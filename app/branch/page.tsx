@@ -1,5 +1,5 @@
 import React from "react";
-import BranchCard from "@/components/BranchCard";
+import BranchCard from "@/components/Branch/BranchCard";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { db } from "@/lib/db";

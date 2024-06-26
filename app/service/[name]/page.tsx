@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import ServiceDetailComponent from "@/components/ServiceDetail";
+import ServiceDetailComponent from "@/components/Service/ServiceDetail";
 
 export default async function ServiceDetailPage({
   params,
@@ -24,11 +24,11 @@ export default async function ServiceDetailPage({
     return <p>Service not found</p>;
   }
 
-  const defaultImageUrl = "/tes.jpg"; 
+  const defaultImageUrl = "/tes.jpg";
 
-  const formattedPrice = new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
+  const formattedPrice = new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
   }).format(Number(data.price));
 
   return (

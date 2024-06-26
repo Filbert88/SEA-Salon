@@ -1,7 +1,7 @@
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { db } from "@/lib/db";
-import ServicePage from "@/components/Service";
+import ServicePage from "@/components/Service/Service";
 
 export default async function ServiceWrapper() {
   const session = await getServerSession(authOptions);
@@ -19,13 +19,13 @@ export default async function ServiceWrapper() {
     select: {
       name: true,
       id: true,
-      imageUrl:true,
+      imageUrl: true,
     },
   });
 
-  const uniqueServices = Array.from(new Map(services.map(service => [service.name, service])).values());
+  const uniqueServices = Array.from(
+    new Map(services.map((service) => [service.name, service])).values()
+  );
 
-  return (
-    <ServicePage services={uniqueServices}/>
-  )
+  return <ServicePage services={uniqueServices} />;
 }

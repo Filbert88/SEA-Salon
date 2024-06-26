@@ -1,4 +1,4 @@
-import StylistCard from "@/components/StylistCard";
+import StylistCard from "@/components/Branch/StylistCard";
 import Image from "next/image";
 import React from "react";
 import { authOptions } from "@/lib/auth";
