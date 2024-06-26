@@ -7,7 +7,7 @@ interface MainServiceProps {
   imageUrl: string;
 }
 
-export default function MainService({
+export default function MainServiceComponent({
   title,
   desc,
   imageUrl,
