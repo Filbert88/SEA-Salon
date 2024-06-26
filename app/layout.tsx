@@ -29,11 +29,19 @@ export default function RootLayout({
         />
       </Head>
       <body className="font-spacemono">
-        <Providers>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-        </Providers>
+        <div
+          style={{
+            minHeight: "100vh",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Providers>
+            <Navbar />
+            <main style={{ flex: 1 }}>{children}</main>
+            <Footer />
+          </Providers>
+        </div>
       </body>
     </html>
   );
