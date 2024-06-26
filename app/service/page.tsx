@@ -1,61 +1,31 @@
-"use client";
-import React from "react";
-import Slider from "react-slick";
-import Card from "@/components/Card";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import { db } from "@/lib/db";
+import ServicePage from "@/components/Service";
 
-const services = [
-  {
-    id: "hair-coloring",
-    title: "Hair Coloring",
-    description: "Detailed description here",
-    price: "$50",
-  },
-  {
-    id: "styling",
-    title: "Styling",
-    description: "Detailed description here",
-    price: "$40",
-  },
-];
+export default async function ServiceWrapper() {
+  const session = await getServerSession(authOptions);
 
-export default function Page() {
-  const settings = {
-    dots: true,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    autoplay: false,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-        },
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/signin",
+        permanent: false,
       },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
+    };
+  }
+
+  const services = await db.service.findMany({
+    select: {
+      name: true,
+      id: true,
+      imageUrl:true,
+    },
+  });
+
+  const uniqueServices = Array.from(new Map(services.map(service => [service.name, service])).values());
 
   return (
-    <div className="container mx-auto mt-32 mb-32 px-10">
-      <h1 className="text-5xl text-center font-bold mb-8">Our Services</h1>
-      <Slider {...settings}>
-        {services.map((card) => (
-          <div key={card.id} className="px-2">
-            <Card title={card.title} href={card.id} />
-          </div>
-        ))}
-      </Slider>
-    </div>
-  );
+    <ServicePage services={uniqueServices}/>
+  )
 }

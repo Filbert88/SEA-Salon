@@ -5,8 +5,9 @@ import Link from "next/link";
 interface cardProps{
     title: string,
     href: string,
+    imageUrl: string | null,
 }
-const Card = ({ title , href} : cardProps) => {
+const Card = ({ title , href, imageUrl} : cardProps) => {
   return (
     <Link href={`/service/${href}`}>
         <div className="cursor-pointer relative">
@@ -14,7 +15,7 @@ const Card = ({ title , href} : cardProps) => {
         <div className="w-[250px] relative">
           <Image
             className="aspect-[2/3] w-full rounded-xl"
-            src="/tes.jpg"
+            src={imageUrl || "/tes.jpg"}
             alt={title}
             height={375}
             width={250}
