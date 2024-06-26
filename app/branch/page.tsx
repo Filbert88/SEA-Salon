@@ -1,21 +1,8 @@
 import React from "react";
 import BranchCard from "@/components/Branch/BranchCard";
-import { authOptions } from "@/lib/auth";
-import { getServerSession } from "next-auth";
 import { db } from "@/lib/db";
 
 export default async function BranchPage() {
-  const session = await getServerSession(authOptions);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/signin",
-        permanent: false,
-      },
-    };
-  }
-
   const branches = await db.branch.findMany({
     select: {
       name: true,

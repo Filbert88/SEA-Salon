@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import BranchDetailComponent from "@/components/BranchDetail";
+import BranchDetailComponent from "@/components/Branch/BranchDetail";
 
 function formatTime(timeString:Date) {
   const date = new Date(timeString);
