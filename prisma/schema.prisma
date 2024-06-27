@@ -20,6 +20,8 @@ model User {
   phone       String       @unique
   password    String
   role        Role
+  isMember    Boolean   @default(false)
+  membershipExpiry DateTime?
   reviews     Review[]
   reservations Reservation[]
   createdAt   DateTime     @default(now())
@@ -35,7 +37,7 @@ model Service {
   description String     
   branchId    Int
   branch      Branch       @relation(fields: [branchId], references: [id])
-  reservations Reservation[]
+  reservations ReservationService[] 
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 }
@@ -53,20 +55,46 @@ model Review {
 }
 
 model Reservation {
-  id          Int          @id @default(autoincrement())
-  userId      Int
-  serviceId   Int
-  branchId    Int
-  date        DateTime
-  user        User         @relation(fields: [userId], references: [id])
-  service     Service      @relation(fields: [serviceId], references: [id])
-  branch      Branch       @relation(fields: [branchId], references: [id]) 
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  id            Int          @id @default(autoincrement())
+  userId        Int
+  branchId      Int
+  stylistId     Int
+  price         BigInt
+  date          DateTime
+  time          String
+  endTime       DateTime
+  user          User         @relation(fields: [userId], references: [id])
+  services      ReservationService[]
+  guests        Guest[]
+  branch        Branch       @relation(fields: [branchId], references: [id]) 
+  stylist       Stylist      @relation(fields: [stylistId], references: [id])
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
 
   @@index([userId])
-  @@index([serviceId])
   @@index([branchId])
+  @@index([stylistId])
+}
+
+model ReservationService {
+  reservationId Int
+  serviceId     Int
+  reservation   Reservation @relation(fields: [reservationId], references: [id])
+  service       Service     @relation(fields: [serviceId], references: [id])
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@id([reservationId, serviceId])
+}
+
+model Guest {
+  id            Int          @id @default(autoincrement())
+  name          String
+  phone         String
+  reservationId Int
+  reservation   Reservation  @relation(fields: [reservationId], references: [id])
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
 }
 
 model Branch {
@@ -91,9 +119,9 @@ model Stylist {
   name          String
   imageUrl    String?
   branchId      Int
+  price         BigInt  @default(0)
   branch        Branch   @relation(fields: [branchId], references: [id])
-  maleCutPrice  Int      
-  femaleCutPrice Int     
+  reservations  Reservation[] 
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
