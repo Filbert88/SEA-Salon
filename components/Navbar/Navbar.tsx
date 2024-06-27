@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import NavbarLink from "./NavbarLink";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
@@ -20,13 +20,13 @@ const navLinkarr = [
     path: "/branch",
   },
   {
-    link: "Contact",
-    path: "/contact",
+    link: "Reservation",
+    path: "/reservation",
   },
 ];
 
 const Navbar = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [openNavbar, setOpenNavbar] = useState(false);
   const [navbarBg, setNavbarBg] = useState("bg-transparent");
   const [isMobile, setIsMobile] = useState(false);
@@ -82,21 +82,26 @@ const Navbar = () => {
     await signOut();
   };
 
-  const authButton = session ? (
-    <button
-      onClick={handleSignOut}
-      className="font-spacemono ml-2 lg:ml-4 border-2 border-[#64ffda] text-[#64ffda] lg:text-[17px] rounded-lg px-5 py-3 hover:scale-110 transition-all duration-300 hover:shadow-[3px_3px_0px_0px_#64ffda]"
-    >
-      Sign Out
-    </button>
-  ) : (
-    <Link
-      href="/signin"
-      className="font-spacemono ml-2 lg:ml-4 border-2 border-[#64ffda] text-[#64ffda] lg:text-[17px] rounded-lg px-5 py-3 hover:scale-110 transition-all duration-300 hover:shadow-[3px_3px_0px_0px_#64ffda]"
-    >
-      Sign In
-    </Link>
-  );
+  const authButton =
+    status === "loading" ? (
+      <div className="font-spacemono ml-2 lg:ml-4 border-2 border-[#64ffda] text-[#64ffda] lg:text-[17px] rounded-lg px-5 py-3">
+        Sign Out
+      </div>
+    ) : session ? (
+      <button
+        onClick={handleSignOut}
+        className="font-spacemono ml-2 lg:ml-4 border-2 border-[#64ffda] text-[#64ffda] lg:text-[17px] rounded-lg px-5 py-3 hover:scale-110 transition-all duration-300 hover:shadow-[3px_3px_0px_0px_#64ffda]"
+      >
+        Sign Out
+      </button>
+    ) : (
+      <Link
+        href="/signin"
+        className="font-spacemono ml-2 lg:ml-4 border-2 border-[#64ffda] text-[#64ffda] lg:text-[17px] rounded-lg px-5 py-3 hover:scale-110 transition-all duration-300 hover:shadow-[3px_3px_0px_0px_#64ffda]"
+      >
+        Sign In
+      </Link>
+    );
 
   return (
     <nav
