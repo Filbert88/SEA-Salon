@@ -51,6 +51,25 @@ const DateAndTimeSelection: React.FC<DateAndTimeSelectionProps> = ({
     return `${hours.padStart(2, "0")}:${minutes}`;
   };
 
+  const generateTimeSlots = (openingTime: string, closingTime: string): void => {
+    const slots: TimeSlot[] = [];
+    let startTime = new Date(`1970-01-01T${parseTime(openingTime)}Z`);
+    let endTime = new Date(`1970-01-01T${parseTime(closingTime)}Z`);
+
+    if (endTime <= startTime) {
+      endTime.setUTCDate(endTime.getUTCDate() + 1);
+    }
+
+    while (startTime < endTime) {
+      const time = `${startTime.getUTCHours().toString().padStart(2, '0')}:${startTime.getUTCMinutes().toString().padStart(2, '0')}`;
+      slots.push({ time, period: getPeriod(time) });
+      startTime.setUTCMinutes(startTime.getUTCMinutes() + 30);
+    }
+
+    console.log("Generated time slots:", slots);
+    setTimeSlots(slots);
+  };
+
   const getPeriod = (time: string): string => {
     const hour = parseInt(time.split(":")[0], 10);
     if (hour < 12) return "Morning";
@@ -58,35 +77,10 @@ const DateAndTimeSelection: React.FC<DateAndTimeSelectionProps> = ({
     return "Evening";
   };
 
-  const generateTimeSlots = (
-    openingTime: string,
-    closingTime: string
-  ): void => {
-    const slots: { time: string; period: string }[] = [];
-    let startTime = new Date(`1970-01-01T${parseTime(openingTime)}:00Z`);
-    let endTime = new Date(`1970-01-01T${parseTime(closingTime)}:00Z`);
-
-    if (endTime <= startTime) {
-      endTime.setDate(endTime.getDate() + 1);
-    }
-
-    while (startTime < endTime) {
-      const time = startTime.toISOString().split("T")[1].slice(0, 5);
-      slots.push({ time, period: getPeriod(time) });
-      startTime.setMinutes(startTime.getMinutes() + 30);
-    }
-
-    console.log("Generated time slots:", slots);
-    setTimeSlots(slots);
-  };
-
   const isPastTime = (time: string): boolean => {
     const now = new Date();
-    const selectedDateTime = new Date(`${selectedDate}T${time}`);
-    return (
-      now.toDateString() === selectedDateTime.toDateString() &&
-      selectedDateTime < now
-    );
+    const selectedDateTime = new Date(`${selectedDate}T${time}Z`);
+    return selectedDateTime < now;
   };
 
   const renderTimeSlots = (period: string) => {
@@ -107,7 +101,7 @@ const DateAndTimeSelection: React.FC<DateAndTimeSelectionProps> = ({
               isPast
                 ? "bg-gray-500 text-white"
                 : selectedTime === slot.time
-                ? "bg-red text-white"
+                ? "bg-red-500 text-white"
                 : "bg-white text-black"
             }`}
             onClick={() => !isPast && setSelectedTime(slot.time)}
