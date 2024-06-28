@@ -16,8 +16,7 @@ interface Stylist {
   id: number;
   name: string;
   imageUrl: string | null;
-  maleCutPrice: string;
-  femaleCutPrice: string;
+  price: string;
 }
 
 interface BranchDetails {
@@ -103,8 +102,7 @@ const BranchDetailComponent: React.FC<BranchDetails> = ({
               key={stylist.id}
               name={stylist.name}
               imageUrl={stylist.imageUrl}
-              maleCutPrice={stylist.maleCutPrice}
-              femaleCutPrice={stylist.femaleCutPrice}
+              price={stylist.price}
             />
           ))}
         </div>

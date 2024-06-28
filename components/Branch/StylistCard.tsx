@@ -4,15 +4,13 @@ import Image from "next/image";
 interface StylistCardProps {
   name: string;
   imageUrl: string | null;
-  maleCutPrice: string;
-  femaleCutPrice: string;
+  price: string;
 }
 
 export default function StylistCard({
   name,
   imageUrl,
-  maleCutPrice,
-  femaleCutPrice,
+  price
 }: StylistCardProps) {
   return (
     <div className="mb-12">
@@ -34,12 +32,8 @@ export default function StylistCard({
             {name}
           </div>
           <div className="flex flex-col text-xl sm:text-3xl">
-            <strong>{femaleCutPrice}</strong>
-            <div className="text-3xl">Female Hair Cut</div>
-          </div>
-          <div className="flex flex-col mt-4 text-xl sm:text-3xl">
-            <strong>{maleCutPrice}</strong>
-            <div className="text-3xl">Male Hair Cut</div>
+            <strong>{price}</strong>
+            <div className="text-3xl">Cut Prices</div>
           </div>
         </div>
       </div>
