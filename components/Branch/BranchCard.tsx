@@ -17,7 +17,7 @@ export default async function BranchCard({
 }: BranchCardProps) {
   return (
     <Link href={`/branch/${href}`} className="w-full">
-      <div className="border border-white rounded-lg p-4 hover:bg-gray-500 hover:cursor-pointer w-full mt-4">
+      <div className="border border-white rounded-lg p-4 hover:bg-gray-500 hover:cursor-pointer w-full mt-4 text-white">
         <div className="font-bold text-2xl">
           <strong>{branchName}</strong>
         </div>

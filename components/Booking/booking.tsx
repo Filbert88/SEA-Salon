@@ -300,7 +300,7 @@ export default function BookingPage({ branches }: BranchesProps) {
         guests.every((guest) => guest.name && guest.phone)));
 
   return (
-    <div className="flex flex-col justify-center items-center pt-32 w-full px-20">
+    <div className="flex flex-col justify-center items-center pt-32 w-full px-10 md:px-20">
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <h2 className="text-2xl mb-4 text-white">Select a Branch</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-auto">
@@ -328,7 +328,7 @@ export default function BookingPage({ branches }: BranchesProps) {
         <div className="w-full">
           <div>
             <div className="text-3xl font-bold mb-3 text-white">Branch</div>
-            <div className="flex flex-row justify-between">
+            <div className="flex flex-col md:flex-row justify-between">
               <div className="text-3xl text-white">{branchName}</div>
               <select
                 value={branchName}
@@ -370,7 +370,7 @@ export default function BookingPage({ branches }: BranchesProps) {
           />
           <div>
             <div className="text-3xl font-bold mt-8 mb-3">Stylist</div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
               {stylists.map((stylist) => (
                 <div
                   key={stylist.id}

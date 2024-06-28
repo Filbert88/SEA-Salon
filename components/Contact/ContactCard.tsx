@@ -29,7 +29,7 @@ const ContactCard = ({ title, phoneNumber }: cardProps) => {
         </div>
         <div className="flex items-center justify-center mt-2">
           <div className="flex flex-row gap-4">
-            <div>Contact me</div>
+            <div className="text-white">Contact me</div>
             <Link
               href={`https://wa.me/${phoneNumber}`}
               className="text-green-500 text-2xl"

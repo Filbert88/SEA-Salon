@@ -30,16 +30,21 @@ export default function Guests({
   const isFirstRender = useRef(true);
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    
     if (guestNumber === "2-6") {
-      if (isLoggedIn) {
-        setGuests([user, defaultGuest]);
-      } else {
-        setGuests([defaultGuest, defaultGuest]);
+      const initialGuests = isLoggedIn ? [user, defaultGuest] : [defaultGuest, defaultGuest];
+      // Only update if different to prevent infinite loop
+      if (JSON.stringify(guests) !== JSON.stringify(initialGuests)) {
+        setGuests(initialGuests);
       }
-    } else {
+    } else if (guestNumber === "justMe") {
       setGuests([]);
     }
-  }, [isLoggedIn, user, guestNumber]);
+  }, [isLoggedIn, user, guestNumber]); 
 
   useEffect(() => {
     // Skip the first render
@@ -48,7 +53,7 @@ export default function Guests({
     } else {
       onGuestsChange(guests);
     }
-  }, [guests, onGuestsChange]);
+  }, [guests]);
 
   const handleGuestChange = (
     index: number,
@@ -90,7 +95,7 @@ export default function Guests({
   };
 
   return (
-    <div className='flex flex-row gap-4 items-center mb-8 mt-8'>
+    <div className='flex flex-col md:flex-row gap-4 items-center mb-8 mt-8'>
       <div className="text-xl">I would like to book an appointment for</div>
       <select
         onChange={(e) => handleGuestNumberChange(e.target.value)}
