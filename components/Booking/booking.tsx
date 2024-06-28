@@ -19,10 +19,10 @@ interface Stylist {
   specialty: string;
 }
 
-interface Branch {
+export interface Branch {
   name: string;
-  openingTime: string;
-  closingTime: string;
+  openingTime: Date;
+  closingTime: Date;
   location: string;
   phone: string;
 }
@@ -106,6 +106,22 @@ export default function BookingPage({ branches }: BranchesProps) {
     fetchServices();
     fetchStylists();
   }, [branchName]);
+
+  const convertUTCToLocalTime = (utcTime: Date): string => {
+    // Clone the UTC time to avoid mutating the original date
+    const localTime = new Date(utcTime.getTime());
+
+    // Convert UTC to UTC+7
+    localTime.setUTCHours(localTime.getUTCHours() + 7);
+
+    // Format time in HH:mm
+    const formattedTime =
+      localTime.getUTCHours().toString().padStart(2, "0") +
+      ":" +
+      localTime.getUTCMinutes().toString().padStart(2, "0");
+
+    return formattedTime;
+  };
 
   const handleServiceSelectionChange = (services: Service[]) => {
     setSelectedServices(services);
@@ -314,10 +330,10 @@ export default function BookingPage({ branches }: BranchesProps) {
               <p className="text-gray-400">{branch.location}</p>
               <p className="text-gray-400">{branch.phone}</p>
               <p className="text-gray-400">
-                Opening Time: {branch.openingTime}
+                Opening Time: {convertUTCToLocalTime(branch.openingTime)}
               </p>
               <p className="text-gray-400">
-                Closing Time: {branch.closingTime}
+                Closing Time: {convertUTCToLocalTime(branch.closingTime)}
               </p>
             </div>
           ))}
@@ -445,6 +461,7 @@ export default function BookingPage({ branches }: BranchesProps) {
               </div>
             </div>
           )}
+
           <button
             onClick={submitReservation}
             className="p-3 mt-4 bg-blue-500 text-white"

@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from "react";
-
+import { Branch } from "./booking";
 interface TimeSlot {
   time: string;
   period: string;
-}
-
-interface Branch {
-  name: string;
-  openingTime: string;
-  closingTime: string;
 }
 
 interface DateAndTimeSelectionProps {
@@ -28,17 +22,11 @@ const DateAndTimeSelection: React.FC<DateAndTimeSelectionProps> = ({
 
   useEffect(() => {
     if (branch && selectedDate) {
-      console.log(
-        "Generating time slots for branch:",
-        branch,
-        "and date:",
-        selectedDate
-      );
       generateTimeSlots(branch.openingTime, branch.closingTime);
     }
   }, [branch, selectedDate]);
 
-  const parseTime = (timeStr: string): string => {
+  const parseTime = (timeStr: string): Date => {
     const [time, modifier] = timeStr.split(" ");
     let [hours, minutes] = time.split(":");
     hours = String(
@@ -46,50 +34,53 @@ const DateAndTimeSelection: React.FC<DateAndTimeSelectionProps> = ({
         ? parseInt(hours, 10) + 12
         : modifier === "AM" && hours === "12"
         ? 0
-        : hours
+        : parseInt(hours)
     );
-    return `${hours.padStart(2, "0")}:${minutes}`;
+    // Return a date object set in UTC
+    return new Date(`1970-01-01T${hours.padStart(2, "0")}:${minutes}:00Z`);
   };
 
-  const generateTimeSlots = (openingTime: string, closingTime: string): void => {
+  const generateTimeSlots = (openingTime: Date, closingTime: Date): void => {
     const slots: TimeSlot[] = [];
-    let startTime = new Date(`1970-01-01T${parseTime(openingTime)}Z`);
-    let endTime = new Date(`1970-01-01T${parseTime(closingTime)}Z`);
+    // Assuming openingTime and closingTime are already in UTC+7
+    let startTime = new Date(openingTime); // No further conversion should be necessary here
+    let endTime = new Date(closingTime);
 
     if (endTime <= startTime) {
-      endTime.setUTCDate(endTime.getUTCDate() + 1);
+      endTime.setDate(endTime.getDate() + 1); // Handle overnight closing times
     }
 
     while (startTime < endTime) {
-      const time = `${startTime.getUTCHours().toString().padStart(2, '0')}:${startTime.getUTCMinutes().toString().padStart(2, '0')}`;
-      slots.push({ time, period: getPeriod(time) });
-      startTime.setUTCMinutes(startTime.getUTCMinutes() + 30);
+      const formattedTime = formatTime(startTime);
+      const period = getPeriod(new Date(startTime)); // Make sure to pass a correct date object
+      slots.push({ time: formattedTime, period });
+      startTime.setMinutes(startTime.getMinutes() + 30); // Increment by 30 minutes
     }
 
-    console.log("Generated time slots:", slots);
     setTimeSlots(slots);
   };
 
-  const getPeriod = (time: string): string => {
-    const hour = parseInt(time.split(":")[0], 10);
+  const formatTime = (date: Date): string => {
+    return `${date.getHours().toString().padStart(2, "0")}:${date
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}`;
+  };
+  const getPeriod = (date: Date): string => {
+    const hour = date.getHours(); 
     if (hour < 12) return "Morning";
-    if (hour < 17) return "Afternoon";
+    if (hour >= 12 && hour < 17) return "Afternoon";
     return "Evening";
   };
 
   const isPastTime = (time: string): boolean => {
     const now = new Date();
-    const selectedDateTime = new Date(`${selectedDate}T${time}Z`);
-    return selectedDateTime < now;
+    const selectedDateTime =
+      new Date(`${selectedDate}T${time}:00Z`).getTime() + 7 * 60 * 60 * 1000;
+    return selectedDateTime < now.getTime();
   };
 
   const renderTimeSlots = (period: string) => {
-    console.log(
-      "Rendering time slots for period:",
-      period,
-      "Time slots:",
-      timeSlots
-    );
     return timeSlots
       .filter((slot) => slot.period === period)
       .map((slot, index) => {
@@ -101,7 +92,7 @@ const DateAndTimeSelection: React.FC<DateAndTimeSelectionProps> = ({
               isPast
                 ? "bg-gray-500 text-white"
                 : selectedTime === slot.time
-                ? "bg-red-500 text-white"
+                ? "bg-red text-white"
                 : "bg-white text-black"
             }`}
             onClick={() => !isPast && setSelectedTime(slot.time)}

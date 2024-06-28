@@ -24,13 +24,13 @@ export default async function BookingWrapper() {
     },
   });
 
-  const processedBranches = branches.map(branch => ({
-    name: branch.name,
-    openingTime: convertToLocalTimeString(branch.openingTime),
-    closingTime: convertToLocalTimeString(branch.closingTime),
-    location: branch.location,
-    phone: branch.phone
-  }));
+  // const processedBranches = branches.map(branch => ({
+  //   name: branch.name,
+  //   openingTime: convertToLocalTimeString(branch.openingTime),
+  //   closingTime: convertToLocalTimeString(branch.closingTime),
+  //   location: branch.location,
+  //   phone: branch.phone
+  // }));
 
-  return <BookingPage branches={processedBranches} />;
+  return <BookingPage branches={branches} />;
 }
