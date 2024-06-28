@@ -35,8 +35,7 @@ model Service {
   imageUrl    String?
   price       BigInt
   description String     
-  branchId    Int
-  branch      Branch       @relation(fields: [branchId], references: [id])
+  branches    BranchService[]
   reservations ReservationService[] 
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
@@ -105,13 +104,24 @@ model Branch {
   phone       String
   openingTime DateTime
   closingTime DateTime
-  services    Service[]
+  services    BranchService[]
   stylists    Stylist[]
   reservations Reservation[]
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 
   @@unique([name, location])
+}
+
+model BranchService {
+  branchId    Int
+  serviceId   Int
+  branch      Branch           @relation(fields: [branchId], references: [id])
+  service     Service          @relation(fields: [serviceId], references: [id])
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@id([branchId, serviceId])
 }
 
 model Stylist {

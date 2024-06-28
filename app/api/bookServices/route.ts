@@ -18,6 +18,24 @@ export async function GET(req: NextRequest) {
 
     const branches = await db.branch.findMany({
       where: { name: branchName },
+      include: {
+        services: {
+          select: {
+            service: {
+              select: {
+                id: true,
+                name: true,
+                duration: true,
+                imageUrl: true,
+                price: true,
+                description: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     if (!branches.length) {
@@ -29,26 +47,12 @@ export async function GET(req: NextRequest) {
 
     const branch = branches[0];
 
-    const services = await db.service.findMany({
-      where: { branchId: branch.id },
-      select: {
-        id: true,
-        name: true,
-        duration: true,
-        imageUrl: true,
-        price: true,
-        description: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
-
-    const serializedServices = services.map(service => ({
-      ...service,
-      price: service.price.toString(),
+    const services = branch.services.map(bs => ({
+      ...bs.service,
+      price: bs.service.price.toString(), 
     }));
 
-    return new NextResponse(JSON.stringify(serializedServices), { status: 200 });
+    return new NextResponse(JSON.stringify(services), { status: 200 });
   } catch (error) {
     console.error("Error fetching services:", error);
     return new NextResponse(

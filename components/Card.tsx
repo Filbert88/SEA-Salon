@@ -8,6 +8,17 @@ interface cardProps{
     imageUrl: string | null,
 }
 const Card = ({ title , href, imageUrl} : cardProps) => {
+
+  function formatImageUrl(imageUrl:string) {
+    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+      return imageUrl;
+    } else {
+     
+      return `${imageUrl}`;
+    }
+  }
+  const formattedImageUrl = imageUrl ? formatImageUrl(imageUrl) : '/tes.jpg'; 
+  
   return (
     <Link href={`/service/${href}`}>
         <div className="cursor-pointer relative">
@@ -15,7 +26,7 @@ const Card = ({ title , href, imageUrl} : cardProps) => {
         <div className="w-[250px] relative">
           <Image
             className="aspect-[2/3] w-full rounded-xl"
-            src={imageUrl || "/tes.jpg"}
+            src={formattedImageUrl}
             alt={title}
             height={375}
             width={250}
