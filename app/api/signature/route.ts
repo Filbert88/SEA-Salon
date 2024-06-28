@@ -1,5 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 
 const cloudName = process.env.CLOUDINARY_CLOUD_NAME!;
@@ -16,7 +15,7 @@ cloudinary.config({
   api_secret: apiSecret,
 });
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
+export async function GET() {
   try {
     const timestamp = Math.round(new Date().getTime() / 1000);
     const params_to_sign = { timestamp };
