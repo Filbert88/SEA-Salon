@@ -63,7 +63,7 @@ const BranchDetailComponent: React.FC<BranchDetails> = ({
           ></iframe>
         </div>
         <div className="border-2 border-white mt-8">
-          <div className="border-b-2 flex justify-center flex-col items-center">
+          <div className="border-b-2 border-white flex justify-center flex-col items-center">
             <div className="text-2xl font-bold">SEA SALON - {name}</div>
             <div className="flex justify-center flex-row mt-4 mb-4">
               <button className="p-3 bg-red rounded-lg flex items-center">

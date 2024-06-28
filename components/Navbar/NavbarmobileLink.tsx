@@ -33,7 +33,7 @@ const NavbarmobileLink = ({
   return (
     <ul className="flex flex-col custom:gap-8 gap-4 py-2 mb-5 custom:mb-10 items-center animate-slidetopbot z-30">
       {links.map((link, index) => (
-        <li key={index} className="z-30">
+        <li key={index} className="z-30 text-custom-green">
           <NavbarLink
             navlink={link.path}
             value={link.link}

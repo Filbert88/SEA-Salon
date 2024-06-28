@@ -94,7 +94,7 @@ export default function ReviewComp({ initialReviews }: ReviewCompProps) {
         </div>
       )}
       <Modal isOpen={modalIsOpen} onClose={closeModal}>
-        <h2 className="text-xl font-bold mb-4">Add Your Review</h2>
+        <h2 className="text-xl font-bold mb-4 text-white">Add Your Review</h2>
         <StarRating onRating={setUserRating} />
         <textarea
           className="border text-black rounded border-gray-300 p-2 w-full mt-4"

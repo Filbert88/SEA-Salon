@@ -119,7 +119,7 @@ const Signin: React.FC = () => {
   return (
     <div className="relative bottom-20 flex w-full max-w-[350px] flex-col gap-5 sm:bottom-0 lg:bottom-0 xl:gap-7">
       <form onSubmit={handleSubmit} className="flex flex-col items-center">
-        <div className="text-4xl mb-6 font-bold">Sign In</div>
+        <div className="text-4xl mb-6 font-bold text-white">Sign In</div>
         <div className="flex flex-col font-normal items-center w-full">
           <input
             placeholder="Email"
@@ -169,7 +169,7 @@ const Signin: React.FC = () => {
         <div className="flex flex-row space-x-2 mt-2">
           <div className="text-gray-300">New here?</div>
           <a
-            className="hover:underline hover:cursor-pointer"
+            className="hover:underline hover:cursor-pointer text-white"
             onClick={() => router.push("/signup")}
           >
             Sign up now.

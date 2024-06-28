@@ -38,7 +38,7 @@ export default function RootLayout({
         >
           <Providers>
             <Navbar />
-            <main style={{ flex: 1 }}>{children}</main>
+            <main style={{ flex: 1 }} className="bg-black">{children}</main>
             <Footer />
           </Providers>
         </div>

@@ -327,7 +327,7 @@ export default function BookingPage({ branches }: BranchesProps) {
         <div>Booking Form</div>
         <div className="w-full">
           <div>
-            <div className="text-3xl font-bold mb-3">Branch</div>
+            <div className="text-3xl font-bold mb-3 text-white">Branch</div>
             <div className="flex flex-row justify-between">
               <div className="text-3xl text-white">{branchName}</div>
               <select
