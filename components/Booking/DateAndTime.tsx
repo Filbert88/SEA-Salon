@@ -36,25 +36,25 @@ const DateAndTimeSelection: React.FC<DateAndTimeSelectionProps> = ({
         ? 0
         : parseInt(hours)
     );
-    // Return a date object set in UTC
+  
     return new Date(`1970-01-01T${hours.padStart(2, "0")}:${minutes}:00Z`);
   };
 
   const generateTimeSlots = (openingTime: Date, closingTime: Date): void => {
     const slots: TimeSlot[] = [];
-    // Assuming openingTime and closingTime are already in UTC+7
-    let startTime = new Date(openingTime); // No further conversion should be necessary here
+  
+    let startTime = new Date(openingTime); 
     let endTime = new Date(closingTime);
 
     if (endTime <= startTime) {
-      endTime.setDate(endTime.getDate() + 1); // Handle overnight closing times
+      endTime.setDate(endTime.getDate() + 1); 
     }
 
     while (startTime < endTime) {
       const formattedTime = formatTime(startTime);
-      const period = getPeriod(new Date(startTime)); // Make sure to pass a correct date object
+      const period = getPeriod(new Date(startTime)); 
       slots.push({ time: formattedTime, period });
-      startTime.setMinutes(startTime.getMinutes() + 30); // Increment by 30 minutes
+      startTime.setMinutes(startTime.getMinutes() + 30); 
     }
 
     setTimeSlots(slots);
@@ -108,19 +108,19 @@ const DateAndTimeSelection: React.FC<DateAndTimeSelectionProps> = ({
     <div className="w-full">
       {branch && selectedDate && (
         <>
-          <h3 className="text-lg font-bold mb-2 mt-4">
+          <h3 className="text-lg font-bold mb-2 mt-4 text-white">
             Available slots for {new Date(selectedDate).toLocaleDateString()}
           </h3>
           <div className="flex flex-col mb-4">
-            <h4 className="font-bold mb-2">Morning</h4>
+            <h4 className="font-bold mb-2 text-white">Morning</h4>
             <div className="flex flex-wrap">{renderTimeSlots("Morning")}</div>
           </div>
           <div className="flex flex-col mb-4">
-            <h4 className="font-bold mb-2">Afternoon</h4>
+            <h4 className="font-bold mb-2 text-white">Afternoon</h4>
             <div className="flex flex-wrap">{renderTimeSlots("Afternoon")}</div>
           </div>
           <div className="flex flex-col mb-4">
-            <h4 className="font-bold mb-2">Evening</h4>
+            <h4 className="font-bold mb-2 text-white">Evening</h4>
             <div className="flex flex-wrap">{renderTimeSlots("Evening")}</div>
           </div>
         </>

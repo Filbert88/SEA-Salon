@@ -96,7 +96,7 @@ export default function Guests({
 
   return (
     <div className='flex flex-col md:flex-row gap-4 items-center mb-8 mt-8'>
-      <div className="text-xl">I would like to book an appointment for</div>
+      <div className="text-xl text-white">I would like to book an appointment for</div>
       <select
         onChange={(e) => handleGuestNumberChange(e.target.value)}
         className="p-2 border text-black rounded"

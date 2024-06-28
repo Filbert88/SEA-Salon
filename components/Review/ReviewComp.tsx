@@ -87,7 +87,7 @@ export default function ReviewComp({ initialReviews }: ReviewCompProps) {
         <div className="flex flex-row justify-center mt-12">
           <button
             onClick={openModal}
-            className="border-2 border-custom-green p-3 rounded-lg flex"
+            className="border-2 border-custom-green p-3 rounded-lg flex text-custom-green"
           >
             Add review
           </button>

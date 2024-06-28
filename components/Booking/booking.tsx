@@ -340,7 +340,6 @@ export default function BookingPage({ branches }: BranchesProps) {
         </div>
       </Modal>
       <div className="max-w-6xl w-full flex flex-col justify-center items-center space-y-4">
-        <div>Booking Form</div>
         <div className="w-full">
           <div>
             <div className="text-3xl font-bold mb-3 text-white">Branch</div>
@@ -375,7 +374,7 @@ export default function BookingPage({ branches }: BranchesProps) {
             />
           </div>
           <div>
-            <div className="text-3xl font-bold mt-8 mb-4">Select Date</div>
+            <div className="text-3xl font-bold mt-8 mb-4 text-white">Select Date</div>
             {renderDateInput()}
           </div>
           <DateAndTimeSelection
@@ -385,7 +384,7 @@ export default function BookingPage({ branches }: BranchesProps) {
             setSelectedTime={setTime}
           />
           <div>
-            <div className="text-3xl font-bold mt-8 mb-3">Stylist</div>
+            <div className="text-3xl font-bold mt-8 mb-3 text-white">Stylist</div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
               {stylists.map((stylist) => (
                 <div
@@ -410,11 +409,10 @@ export default function BookingPage({ branches }: BranchesProps) {
                       {stylist.name[0].toUpperCase()}
                     </div>
                     <div className="ml-2">
-                      <h3 className="text-lg font-bold">{stylist.name}</h3>
-                      <p>{formatRupiah(Number(stylist.price))}</p>
+                      <h3 className="text-lg font-bold text-white">{stylist.name}</h3>
+                      <p className="text-white">{formatRupiah(Number(stylist.price))}</p>
                     </div>
                   </div>
-                  <div className="text-sm">{stylist.specialty}</div>
                 </div>
               ))}
             </div>
@@ -464,7 +462,7 @@ export default function BookingPage({ branches }: BranchesProps) {
 
           <button
             onClick={submitReservation}
-            className="p-3 mt-4 bg-blue-500 text-white"
+            className="p-3 mt-4 bg-gray-800 text-white rounded-lg"
           >
             Book Reservation
           </button>
