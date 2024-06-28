@@ -37,7 +37,7 @@ const StylistForm = ({ branches }: BranchesProps) => {
         imageUrl
       }
   
-      const response = await fetch('/api/adminStylist', {
+      const response = await fetch('/api/admin/stylist', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

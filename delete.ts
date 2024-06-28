@@ -4,14 +4,15 @@ const prisma = new PrismaClient();
 
 async function main() {
   // Delete all records in the correct order to avoid foreign key constraints issues
+  await prisma.reservationService.deleteMany({});
   await prisma.review.deleteMany({});
-  // await prisma.reservation.deleteMany({});
+  await prisma.reservation.deleteMany({});
   await prisma.stylist.deleteMany({});
+  await prisma.branchService.deleteMany({});
   await prisma.service.deleteMany({});
   await prisma.branch.deleteMany({});
   await prisma.user.deleteMany({});
-  await prisma.stylist.deleteMany({});
-
+  
   console.log('All data deleted');
 }
 

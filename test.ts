@@ -1,43 +1,55 @@
-import { PrismaClient } from '@prisma/client';
-
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-async function main() {
-  // Create a new user
-  const newUser = await prisma.user.create({
-    data: {
-      fullName: 'filbert',
-      email: 'filbert@gmail.com',
-      phone: '1234567890',
-      password: 'securepassword',
-      role: 'CUSTOMER',
-    },
-  });
-  console.log('New User:', newUser);
+async function updateStylistPrices() {
+  // Array of prices for stylists with IDs from 2 to 28
+  const prices = [
+    100000, // price for stylist with ID 2
+    105000, // price for stylist with ID 3
+    110000, // price for stylist with ID 4
+    200000,
+    300000,
+    150000,
+    188000,
+    188000,
+    169000,
+    95000,
+    100000,
+    100000,
+    120000,
+    125000,
+    125000,
+    140000,
+    150000,
+    165000,
+    120000,
+    100000, // price for stylist with ID 2
+    105000, // price for stylist with ID 3
+    110000, // price for stylist with ID 4
+    200000,
+    300000,
+    150000,
+    178000,
+    100000,
 
-  // Fetch all users
-  const allUsers = await prisma.user.findMany();
-  console.log('All Users:', allUsers);
+    // Add more prices for each stylist up to ID 28
+  ];
 
-  // Update a user
-  const updatedUser = await prisma.user.update({
-    where: { id: newUser.id },
-    data: { phone: '0987654321' },
-  });
-  console.log('Updated User:', updatedUser);
-
-  // Delete a user
-  const deletedUser = await prisma.user.delete({
-    where: { id: newUser.id },
-  });
-  console.log('Deleted User:', deletedUser);
+  try {
+    // Loop through each price and update the corresponding stylist
+    for (let i = 0; i < prices.length; i++) {
+      const stylistId = i + 2; // Since array index starts at 0 and stylist IDs start at 2
+      await prisma.stylist.update({
+        where: { id: stylistId },
+        data: { price: prices[i] },
+      });
+    }
+    console.log("Prices updated successfully.");
+  } catch (error) {
+    console.error("Error updating stylist prices:", error);
+  } finally {
+    await prisma.$disconnect();
+  }
 }
 
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+updateStylistPrices();

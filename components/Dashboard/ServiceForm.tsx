@@ -51,7 +51,7 @@ const ServiceForm = ({ branches }: BranchesProps) => {
         imageUrl  
       };
   
-      const response = await fetch('/api/services', {
+      const response = await fetch('/api/admin/services', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
