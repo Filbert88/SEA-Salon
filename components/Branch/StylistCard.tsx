@@ -12,6 +12,17 @@ export default function StylistCard({
   imageUrl,
   price
 }: StylistCardProps) {
+
+  function formatImageUrl(imageUrl:string) {
+    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+      return imageUrl;
+    } else {
+     
+      return `${imageUrl}`;
+    }
+  }
+  const formattedImageUrl = imageUrl ? formatImageUrl(imageUrl) : '/tes.jpg'; 
+
   return (
     <div className="mb-12">
       <div className="flex flex-col sm:flex-row gap-8 justify-center sm:justify-normal">
@@ -19,7 +30,7 @@ export default function StylistCard({
           <div className="w-[250px] sm:w-[300px]">
             <Image
               className="aspect-[2/3] w-full rounded-xl"
-              src={imageUrl || "/tes.jpg"}
+              src={formattedImageUrl}
               alt={name}
               height={375}
               width={250}

@@ -1,6 +1,6 @@
 "use client"
-import React, { useState } from 'react';
-import FileUploadButton from './UploadButton';
+import React, { useState } from "react";
+import FileUploadButton from "./UploadButton";
 
 interface Branch {
   id: number;
@@ -16,49 +16,35 @@ interface BranchesProps {
   branches: Branch[];
 }
 
-const ServiceForm = ({ branches }: BranchesProps) => {
-  const [name, setName] = useState('');
-  const [duration, setDuration] = useState('');
-  const [imageURL, setImageURL] = useState('');
+const StylistForm = ({ branches }: BranchesProps) => {
+  const [name, setName] = useState("");
   const [file, setFile] = useState<File | null>(null);
-  const [price, setPrice] = useState('');
-  const [description, setDescription] = useState('');
-  const [selectedBranches, setSelectedBranches] = useState<number[]>([]);
+  const [price, setPrice] = useState("");
+  const [selectedBranch, setSelectedBranch] = useState<string | null>(null);
 
-  const handleBranchSelect = (branchId: number) => {
-    if (selectedBranches.includes(branchId)) {
-      setSelectedBranches(selectedBranches.filter(id => id !== branchId));
-    } else {
-      setSelectedBranches([...selectedBranches, branchId]);
-    }
-  };
-
-  console.log(selectedBranches);
-
+  console.log("ini selected", selectedBranch);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
-    try {
+
+    try{
       const imageUrl = await uploadFileToCloudinary();
       console.log("Image URL after upload:", imageUrl);  
-  
+
       const data = {
         name,
-        duration,
         price,
-        description,
-        branchIds: selectedBranches,
-        imageUrl  
-      };
+        branchId: selectedBranch || null,
+        imageUrl
+      }
   
-      const response = await fetch('/api/services', {
+      const response = await fetch('/api/adminStylist', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
       });
-  
+
       const result = await response.json(); 
   
       if (response.ok) {
@@ -66,9 +52,10 @@ const ServiceForm = ({ branches }: BranchesProps) => {
       } else {
         console.error('Error adding service:', result);
       }
-    } catch (error) {
+    } catch(error){
       console.error('Failed to submit form:', error);
     }
+   
   };
 
   const uploadFileToCloudinary = async () => {
@@ -104,10 +91,9 @@ const ServiceForm = ({ branches }: BranchesProps) => {
       return '';
     }
   };
-
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-xl font-semibold">Add New Service</h2>
+      <h2 className="text-xl font-semibold">Add New Stylist</h2>
       <div className="flex flex-col text-black gap-2">
         <input
           type="text"
@@ -116,59 +102,35 @@ const ServiceForm = ({ branches }: BranchesProps) => {
           onChange={(e) => setName(e.target.value)}
           className="text-black p-3 rounded"
         />
-        <input
-          type="text"
-          placeholder="Duration (minutes)"
-          value={duration}
-          onChange={(e) => setDuration(e.target.value)}
-          className="text-black p-3 rounded"
-        />
         <FileUploadButton onFileSelect={setFile} />
         <input
           type="text"
           placeholder="Price"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
-          className="text-black p-3 rounded"
-        />
-        <textarea
-          placeholder="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          className="text-black p-3 rounded"
+          className="p-3 rounded"
         />
         <select
-          onChange={(e) => handleBranchSelect(parseInt(e.target.value))}
-          className="text-black p-3 rounded"
+          value={selectedBranch || ""}
+          onChange={(e) => setSelectedBranch(e.target.value || null)}
+          className="rounded p-3"
         >
-          <option disabled selected>Select Branches</option>
+          <option value="">No Branch Assigned</option>
           {branches.map((branch) => (
-            <option key={branch.id} value={branch.id}>
+            <option key={branch.id} value={branch.id.toString()}>
               {branch.name}
             </option>
           ))}
         </select>
-        <div className="flex flex-wrap gap-2">
-          {selectedBranches.map(branchId => {
-            const branch = branches.find(b => b.id === branchId);
-            return (
-              <div key={branchId} className="flex items-center gap-2 bg-gray-200 rounded p-2">
-                {branch?.name}
-                <button type="button" onClick={() => handleBranchSelect(branchId)} className="bg-red-500 text-white rounded-full px-2">X</button>
-              </div>
-            );
-          })}
-        </div>
       </div>
-
       <button
         type="submit"
         className="border-2 border-custom-green p-3 rounded-lg"
       >
-        Add Service
+        Add Stylist
       </button>
     </form>
   );
 };
 
-export default ServiceForm;
+export default StylistForm;
