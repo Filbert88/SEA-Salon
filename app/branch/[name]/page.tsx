@@ -29,8 +29,7 @@ export default async function BranchDetailPage({ params }: { params: { name: str
           id: true,
           name: true,
           imageUrl: true,
-          maleCutPrice: true,
-          femaleCutPrice: true,
+          price:true
         }
       }
     },
@@ -45,8 +44,7 @@ export default async function BranchDetailPage({ params }: { params: { name: str
 
   const stylists = data.stylists.map(stylist => ({
     ...stylist,
-    maleCutPrice: formatPrice(stylist.maleCutPrice),
-    femaleCutPrice: formatPrice(stylist.femaleCutPrice),
+    price: formatPrice(Number(stylist.price)), 
   }));
 
   return (

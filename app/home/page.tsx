@@ -1,6 +1,12 @@
+"use client"
 import React from "react";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
+  const router = useRouter();
+  const handleBookNowClick = () => {
+    router.push('/booking');
+  };
   return (
     <div className="flex flex-col items-center justify-center min-h-screen relative bottom-20">
       <div className="flex flex-col items-center text-center">
@@ -19,7 +25,7 @@ export default function HomePage() {
           service and results.
         </div>
         <div className="flex flex-row gap-8 mt-4">
-          <button className="rounded-lg bg-custom-green text-black py-3 px-3">
+          <button className="rounded-lg bg-custom-green text-black py-3 px-3" onClick={handleBookNowClick}>
             Book Now
           </button>
           <button className="rounded-lg bg-custom-green text-black py-3 px-3">
