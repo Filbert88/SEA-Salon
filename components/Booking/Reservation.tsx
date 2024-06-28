@@ -18,7 +18,7 @@ interface ReservationsProps {
 export default function ReservationsPage({ reservations }: ReservationsProps) {
   return (
     <div className="container mx-auto px-4 pt-32">
-      <h1 className="text-2xl font-bold my-4">Your Reservations</h1>
+      <h1 className="text-2xl font-bold my-4 text-white text-center">Your Reservations</h1>
       <ul>
         {reservations.map((reservation) => (
           <li

@@ -17,7 +17,7 @@ const ServiceDetailComponent = ({
 }: serviceDetailProps) => {
   return (
     <div className="min-h-full flex flex-col items-center justify-center mt-32 px-10 md:px-20 lg:px-40 ">
-      <h1 className="text-6xl text-white text-center">OUR SERVICES</h1>
+      <h1 className="text-6xl text-white text-center font-bold">OUR SERVICES</h1>
       <div className="w-full mt-4 text-white">
         <div className="relative min-h-[500px]">
           <Image src={imageUrl} alt={name} layout="fill" />

@@ -1,9 +1,7 @@
+"use client"
 import StylistCard from "@/components/Branch/StylistCard";
-import Image from "next/image";
 import React from "react";
-import { authOptions } from "@/lib/auth";
-import { getServerSession } from "next-auth";
-import { db } from "@/lib/db";
+import { useRouter } from "next/navigation";
 
 import {
   MdBookOnline,
@@ -38,18 +36,23 @@ const BranchDetailComponent: React.FC<BranchDetails> = ({
   phone,
   stylists,
 }) => {
+  const router = useRouter();
   const getGoogleMapsEmbedUrl = (location: string) => {
     const formattedLocation = encodeURIComponent(location);
     return `https://www.google.com/maps?q=${formattedLocation}&output=embed`;
   };
 
   const googleMapsSrc = getGoogleMapsEmbedUrl(location);
+
+  const handleNavigation = (url: string) => {
+    router.push(url);
+  };
   return (
     <div className="flex justify-center items-center flex-col pt-32 px-4">
       <div className="max-w-6xl">
         <div>
-          <h1 className="font-bold text-5xl text-white">SEA SALON {name}</h1>
-          <p className="text-xl text-white">{description}</p>
+          <h1 className="font-bold text-5xl text-white mb-4">SEA SALON {name}</h1>
+          <p className="text-xl text-white text-justify">{description}</p>
         </div>
         <div className="mt-8">
           <iframe
@@ -63,10 +66,10 @@ const BranchDetailComponent: React.FC<BranchDetails> = ({
           ></iframe>
         </div>
         <div className="border-2 border-white mt-8">
-          <div className="border-b-2 border-white flex justify-center flex-col items-center">
-            <div className="text-2xl font-bold text-white">SEA SALON - {name}</div>
+          <div className="border-b-2 border-white flex justify-center flex-col items-center p-2">
+            <div className="text-2xl font-bold text-white text-center">SEA SALON - {name}</div>
             <div className="flex justify-center flex-row mt-4 mb-4">
-              <button className="p-3 bg-red rounded-lg flex items-center text-white">
+              <button className="p-3 bg-red rounded-lg flex items-center text-white" onClick={() => handleNavigation('/booking')}>
                 <MdBookOnline className="mr-2" />
                 Book Now
               </button>
