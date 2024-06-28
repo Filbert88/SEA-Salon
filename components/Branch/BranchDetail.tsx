@@ -48,8 +48,8 @@ const BranchDetailComponent: React.FC<BranchDetails> = ({
     <div className="flex justify-center items-center flex-col pt-32 px-4">
       <div className="max-w-6xl">
         <div>
-          <h1 className="font-bold text-5xl">SEA SALON {name}</h1>
-          <p className="text-xl">{description}</p>
+          <h1 className="font-bold text-5xl text-white">SEA SALON {name}</h1>
+          <p className="text-xl text-white">{description}</p>
         </div>
         <div className="mt-8">
           <iframe
@@ -64,15 +64,15 @@ const BranchDetailComponent: React.FC<BranchDetails> = ({
         </div>
         <div className="border-2 border-white mt-8">
           <div className="border-b-2 border-white flex justify-center flex-col items-center">
-            <div className="text-2xl font-bold">SEA SALON - {name}</div>
+            <div className="text-2xl font-bold text-white">SEA SALON - {name}</div>
             <div className="flex justify-center flex-row mt-4 mb-4">
-              <button className="p-3 bg-red rounded-lg flex items-center">
+              <button className="p-3 bg-red rounded-lg flex items-center text-white">
                 <MdBookOnline className="mr-2" />
                 Book Now
               </button>
             </div>
           </div>
-          <div className="mt-2 flex flex-col gap-2 px-4">
+          <div className="mt-2 flex flex-col gap-2 px-4 text-white">
             <div className="flex flex-row items-center gap-2">
               <div>
                 <MdAccessTime className="mr-2" size={24} />
@@ -96,7 +96,7 @@ const BranchDetailComponent: React.FC<BranchDetails> = ({
           </div>
         </div>
         <div className="flex flex-col mt-16">
-          <div className="text-6xl text-center mb-8 font-bold">Our Stylist</div>
+          <div className="text-6xl text-center mb-8 font-bold text-white">Our Stylist</div>
           {stylists.map((stylist) => (
             <StylistCard
               key={stylist.id}

@@ -28,6 +28,7 @@ const DateAndTimeSelection: React.FC<DateAndTimeSelectionProps> = ({
 
   useEffect(() => {
     if (branch && selectedDate) {
+      console.log('Generating time slots for branch:', branch, 'and date:', selectedDate);
       generateTimeSlots(branch.openingTime, branch.closingTime);
     }
   }, [branch, selectedDate]);
@@ -55,8 +56,10 @@ const DateAndTimeSelection: React.FC<DateAndTimeSelectionProps> = ({
       startTime = new Date(startTime.getTime() + 30 * 60000); 
     }
 
+    console.log('Generated time slots:', slots);
     setTimeSlots(slots);
   };
+
 
   const isPastTime = (time: string): boolean => {
     const now = new Date();
@@ -65,6 +68,7 @@ const DateAndTimeSelection: React.FC<DateAndTimeSelectionProps> = ({
   };
 
   const renderTimeSlots = (period: string) => {
+    console.log('Rendering time slots for period:', period, 'Time slots:', timeSlots);
     return timeSlots
       .filter(slot => slot.period === period)
       .map((slot, index) => {

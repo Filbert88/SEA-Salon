@@ -14,8 +14,8 @@ export default function Review({ name, review, star }: ReviewProps) {
   };
   return (
     <div className="flex flex-col items-center justify-center text-center space-y-2">
-      <p className="italic">"{review}"</p>
-      <div className="text-lg font-semibold">{name}</div>
+      <p className="italic text-white">"{review}"</p>
+      <div className="text-lg font-semibold text-white">{name}</div>
       <div className="text-yellow-500 text-xl">{renderStars()}</div>
     </div>
   );

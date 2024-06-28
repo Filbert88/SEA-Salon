@@ -38,7 +38,7 @@ export default function StylistCard({
             />
           </div>
         </div>
-        <div className="flex flex-col justify-center sm:justify-normal px-4">
+        <div className="flex flex-col justify-center sm:justify-normal px-4 text-white">
           <div className="font-semibold text-3xl sm:text-5xl mb-6 text-center">
             {name}
           </div>

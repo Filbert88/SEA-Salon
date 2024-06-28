@@ -71,7 +71,7 @@ export default function ReviewComp({ initialReviews }: ReviewCompProps) {
 
   return (
     <div className="container mx-auto px-4 py-8 mt-10">
-      <div className="text-5xl mb-16 font-bold text-center">What They Said</div>
+      <div className="text-5xl mb-16 font-bold text-center text-white">What They Said</div>
       <Slider {...settings}>
         {reviews.map((review, index) => (
           <div key={index}>
