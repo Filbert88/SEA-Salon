@@ -118,9 +118,9 @@ model Stylist {
   id            Int      @id @default(autoincrement())
   name          String
   imageUrl    String?
-  branchId      Int
+  branchId      Int?
   price         BigInt  @default(0)
-  branch        Branch   @relation(fields: [branchId], references: [id])
+  branch        Branch?   @relation(fields: [branchId], references: [id])
   reservations  Reservation[] 
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
