@@ -8,11 +8,6 @@ interface Service {
   duration: string;
 }
 
-interface Guest {
-  name: string;
-  phone: string;
-}
-
 export async function POST(req: NextRequest) {
   console.log("masukk")
   try {
@@ -21,7 +16,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const { branchName, services, stylistId, date, time, guests, totalPrice, endTime } =
+    const { branchName, services, stylistId, date, time, totalPrice, endTime } =
       await req.json();
 
       console.log("Request body:", {
@@ -30,7 +25,6 @@ export async function POST(req: NextRequest) {
         stylistId,
         date,
         time,
-        guests,
         totalPrice,
       });
 
@@ -75,18 +69,11 @@ export async function POST(req: NextRequest) {
             serviceId: parseInt(service.serviceId),
           })),
         },
-        guests: {
-          create: guests.map((guest: Guest) => ({
-            name: guest.name,
-            phone: guest.phone,
-          })),
-        },
       },
       include: {
         branch: true,
         stylist: true,
         services: true,
-        guests: true,
       },
     });
 

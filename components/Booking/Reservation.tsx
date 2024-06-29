@@ -11,7 +11,6 @@ interface Reservation {
   stylistName: string;
   totalPrice: string;
   services: string[];
-  guests: string[];
 }
 
 interface ReservationsProps {
@@ -61,18 +60,6 @@ export default function ReservationsPage({ reservations }: ReservationsProps) {
                   <ul>
                     {reservation.services.map((service, index) => (
                       <li key={index}>{service}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <span> -</span>
-                )}
-              </div>
-              <div>
-                Guests:
-                {reservation.guests.length > 0 ? (
-                  <ul>
-                    {reservation.guests.map((guest, index) => (
-                      <li key={index}>{guest}</li>
                     ))}
                   </ul>
                 ) : (

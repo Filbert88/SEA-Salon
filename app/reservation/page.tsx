@@ -21,7 +21,6 @@ export default async function ReservationWrapper() {
           service: true,
         },
       },
-      guests: true,
     },
   });
 
@@ -33,7 +32,6 @@ export default async function ReservationWrapper() {
     stylistName: string;
     totalPrice: string;
     services: string[];
-    guests: string[];
   };
 
   const formattedReservations: FormattedReservation[] = reservations.map((reservation) => ({
@@ -44,7 +42,6 @@ export default async function ReservationWrapper() {
     stylistName: reservation.stylist.name,
     totalPrice: reservation.price.toString(),
     services: reservation.services.map((rs) => rs.service.name),
-    guests: reservation.guests.map((guest) => guest.name),
   }));
 
   return <ReservationsPage reservations={formattedReservations} />;

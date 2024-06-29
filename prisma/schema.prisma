@@ -64,7 +64,6 @@ model Reservation {
   endTime       DateTime
   user          User         @relation(fields: [userId], references: [id])
   services      ReservationService[]
-  guests        Guest[]
   branch        Branch       @relation(fields: [branchId], references: [id]) 
   stylist       Stylist      @relation(fields: [stylistId], references: [id])
   createdAt     DateTime     @default(now())
@@ -84,16 +83,6 @@ model ReservationService {
   updatedAt     DateTime    @updatedAt
 
   @@id([reservationId, serviceId])
-}
-
-model Guest {
-  id            Int          @id @default(autoincrement())
-  name          String
-  phone         String
-  reservationId Int
-  reservation   Reservation  @relation(fields: [reservationId], references: [id])
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
 }
 
 model Branch {

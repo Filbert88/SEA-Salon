@@ -97,7 +97,7 @@ const BranchDetailComponent: React.FC<BranchDetails> = ({
               </button>
             </div>
           </div>
-          <div className="mt-2 flex flex-col gap-2 px-4 text-white">
+          <div className="mt-2 flex flex-col gap-2 px-4 text-white pb-2">
             <div className="flex flex-row items-center gap-2">
               <div>
                 <MdAccessTime className="mr-2" size={24} />

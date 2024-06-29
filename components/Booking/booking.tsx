@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Guests from "@/components/Booking/Guests";
 import ServicesMenu from "@/components/Booking/service";
 import DateAndTimeSelection from "./DateAndTime";
 import { useSession } from "next-auth/react";
@@ -9,11 +8,6 @@ import Modal from "../Modal";
 import Toast from "../Toast";
 import { ToastState } from "../Toast";
 import Loading from "../Loading";
-
-interface Guest {
-  name: string;
-  phone: string;
-}
 
 interface Stylist {
   id: string;
@@ -45,21 +39,16 @@ interface Service {
 export default function BookingPage({ branches }: BranchesProps) {
   const { data: session } = useSession();
   const isLoggedIn = !!session;
-  const user: Guest = isLoggedIn
-    ? { name: session?.user?.name || "", phone: "" }
-    : { name: "", phone: "" };
   const [isLoading, setIsLoading] = useState(false);
   const [branchName, setBranchName] = useState(branches[0]?.name || "");
   const [branch, setBranch] = useState<Branch | null>(branches[0] || null);
   const [services, setServices] = useState<Service[]>([]);
   const [selectedServices, setSelectedServices] = useState<Service[]>([]);
-  const [guests, setGuests] = useState<Guest[]>([]);
   const [stylist, setStylist] = useState<Stylist | null>(null);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [stylists, setStylists] = useState<Stylist[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(true);
-  const [guestNumber, setGuestNumber] = useState("justMe");
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [availability, setAvailability] = useState<{ [key: string]: boolean }>(
     {}
@@ -81,7 +70,7 @@ export default function BookingPage({ branches }: BranchesProps) {
       if (branchName) {
         console.log(`Fetching services for branch: ${branchName}`);
         const response = await fetch(
-          `/api/bookServices?branch=${encodeURIComponent(branchName)}`
+          `/api/booking/service?branch=${encodeURIComponent(branchName)}`
         );
         const data = await response.json();
         console.log(data);
@@ -142,10 +131,6 @@ export default function BookingPage({ branches }: BranchesProps) {
   const handleBranchSelect = (branch: Branch) => {
     setBranchName(branch.name);
     setIsModalOpen(false);
-  };
-
-  const handleGuestsChange = (guests: Guest[]) => {
-    setGuests(guests);
   };
 
   const submitReservation = async () => {
@@ -212,7 +197,6 @@ export default function BookingPage({ branches }: BranchesProps) {
 
     const reservationData = {
       branchName,
-      guests,
       services: selectedServices.map((service) => ({
         serviceId: Number(service.id),
         duration: service.duration,
@@ -229,7 +213,7 @@ export default function BookingPage({ branches }: BranchesProps) {
     console.log("Reservation Data:", reservationData);
 
     try {
-      const response = await fetch("/api/check-stylist-availability", {
+      const response = await fetch("/api/booking/stylist", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -250,7 +234,7 @@ export default function BookingPage({ branches }: BranchesProps) {
         return;
       }
 
-      const createResponse = await fetch("/api/reservations", {
+      const createResponse = await fetch("/api/booking/reservations", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -287,7 +271,6 @@ export default function BookingPage({ branches }: BranchesProps) {
       });
     } finally {
       setSelectedServices([]);
-      setGuests([]);
       setStylist(null);
       setDate("");
       setTime("");
@@ -336,10 +319,7 @@ export default function BookingPage({ branches }: BranchesProps) {
     selectedServices.length > 0 &&
     date &&
     time &&
-    stylist &&
-    (guestNumber === "justMe" ||
-      (guests.length > 0 &&
-        guests.every((guest) => guest.name && guest.phone)));
+    stylist 
 
   if (isLoading) {
     return <Loading />;
@@ -378,7 +358,7 @@ export default function BookingPage({ branches }: BranchesProps) {
               <select
                 value={branchName}
                 onChange={(e) => setBranchName(e.target.value)}
-                className="bg-white text-black p-3 border-2 border-custom-green"
+                className="bg-white text-black p-3 border-2 border-custom-green rounded-lg"
               >
                 <option value="">Select a branch</option>
                 {branches.map((branch, index) => (
@@ -389,13 +369,6 @@ export default function BookingPage({ branches }: BranchesProps) {
               </select>
             </div>
           </div>
-          {/* <Guests
-            isLoggedIn={isLoggedIn}
-            user={user}
-            onGuestsChange={handleGuestsChange}
-            guestNumber={guestNumber}
-            setGuestNumber={setGuestNumber}
-          /> */}
           <div>
             <div className="text-3xl font-bold mb-4 mt-4 text-white">
               Select the Service
