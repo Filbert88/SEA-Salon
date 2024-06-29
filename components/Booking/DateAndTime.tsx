@@ -36,25 +36,25 @@ const DateAndTimeSelection: React.FC<DateAndTimeSelectionProps> = ({
         ? 0
         : parseInt(hours)
     );
-  
+
     return new Date(`1970-01-01T${hours.padStart(2, "0")}:${minutes}:00Z`);
   };
 
   const generateTimeSlots = (openingTime: Date, closingTime: Date): void => {
     const slots: TimeSlot[] = [];
-  
-    let startTime = new Date(openingTime); 
+
+    let startTime = new Date(openingTime);
     let endTime = new Date(closingTime);
 
     if (endTime <= startTime) {
-      endTime.setDate(endTime.getDate() + 1); 
+      endTime.setDate(endTime.getDate() + 1);
     }
 
     while (startTime < endTime) {
       const formattedTime = formatTime(startTime);
-      const period = getPeriod(new Date(startTime)); 
+      const period = getPeriod(new Date(startTime));
       slots.push({ time: formattedTime, period });
-      startTime.setMinutes(startTime.getMinutes() + 30); 
+      startTime.setMinutes(startTime.getMinutes() + 30);
     }
 
     setTimeSlots(slots);
@@ -67,7 +67,7 @@ const DateAndTimeSelection: React.FC<DateAndTimeSelectionProps> = ({
       .padStart(2, "0")}`;
   };
   const getPeriod = (date: Date): string => {
-    const hour = date.getHours(); 
+    const hour = date.getHours();
     if (hour < 12) return "Morning";
     if (hour >= 12 && hour < 17) return "Afternoon";
     return "Evening";
@@ -75,9 +75,10 @@ const DateAndTimeSelection: React.FC<DateAndTimeSelectionProps> = ({
 
   const isPastTime = (time: string): boolean => {
     const now = new Date();
-    const selectedDateTime =
-      new Date(`${selectedDate}T${time}:00Z`).getTime() + 7 * 60 * 60 * 1000;
-    return selectedDateTime < now.getTime();
+    const selectedDateTime = new Date(`${selectedDate}T${time}`);
+    selectedDateTime.setHours(selectedDateTime.getHours());
+
+    return selectedDateTime < now;
   };
 
   const renderTimeSlots = (period: string) => {
@@ -88,6 +89,7 @@ const DateAndTimeSelection: React.FC<DateAndTimeSelectionProps> = ({
         return (
           <button
             key={index}
+            type="button"
             className={`p-2 m-1 rounded ${
               isPast
                 ? "bg-gray-500 text-white"

@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const { branchName, services, stylistId, date, time, guests, totalPrice } =
+    const { branchName, services, stylistId, date, time, guests, totalPrice, endTime } =
       await req.json();
 
       console.log("Request body:", {
@@ -57,8 +57,10 @@ export async function POST(req: NextRequest) {
       0
     );
     const startTime = new Date(`${date} ${time}`);
-    const endTime = new Date(startTime.getTime() + totalDuration * 60000); 
+    const parsedEndTime = new Date(endTime);; 
 
+    console.log("server: ",startTime);
+    console.log("server: ", endTime);
     const reservation = await db.reservation.create({
       data: {
         userId: Number(session.user.id),
@@ -66,7 +68,7 @@ export async function POST(req: NextRequest) {
         stylistId: parseInt(stylistId),
         date: new Date(date),
         time,
-        endTime,
+        endTime: parsedEndTime,
         price: BigInt(totalPrice),
         services: {
           create: (services as Service[]).map((service) => ({

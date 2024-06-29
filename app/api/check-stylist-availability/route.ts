@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { db } from "@/lib/db";
 
 export async function POST(req: NextRequest, res: NextResponse) {
   const { stylistId, startTime, endTime } = await req.json();
@@ -10,8 +8,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
     return NextResponse.json({message:"Missing required parameters"}, {status:400})
   }
 
+  console.log("endtime stylist: ", endTime)
+
   try {
-    const overlappingReservations = await prisma.reservation.findMany({
+    const overlappingReservations = await db.reservation.findMany({
       where: {
         stylistId,
         AND: [

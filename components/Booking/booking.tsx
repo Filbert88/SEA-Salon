@@ -6,6 +6,9 @@ import DateAndTimeSelection from "./DateAndTime";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import Modal from "../Modal";
+import Toast from "../Toast";
+import { ToastState } from "../Toast";
+import Loading from "../Loading";
 
 interface Guest {
   name: string;
@@ -45,7 +48,7 @@ export default function BookingPage({ branches }: BranchesProps) {
   const user: Guest = isLoggedIn
     ? { name: session?.user?.name || "", phone: "" }
     : { name: "", phone: "" };
-
+  const [isLoading, setIsLoading] = useState(false);
   const [branchName, setBranchName] = useState(branches[0]?.name || "");
   const [branch, setBranch] = useState<Branch | null>(branches[0] || null);
   const [services, setServices] = useState<Service[]>([]);
@@ -64,6 +67,11 @@ export default function BookingPage({ branches }: BranchesProps) {
   const [selectedStylistId, setSelectedStylistId] = useState<string | null>(
     null
   );
+  const [toast, setToast] = useState<ToastState>({
+    isOpen: false,
+    message: "",
+    type: "info",
+  });
 
   useEffect(() => {
     const selectedBranch = branches.find((b) => b.name === branchName);
@@ -108,13 +116,10 @@ export default function BookingPage({ branches }: BranchesProps) {
   }, [branchName]);
 
   const convertUTCToLocalTime = (utcTime: Date): string => {
-    // Clone the UTC time to avoid mutating the original date
     const localTime = new Date(utcTime.getTime());
 
-    // Convert UTC to UTC+7
     localTime.setUTCHours(localTime.getUTCHours() + 7);
 
-    // Format time in HH:mm
     const formattedTime =
       localTime.getUTCHours().toString().padStart(2, "0") +
       ":" +
@@ -127,6 +132,7 @@ export default function BookingPage({ branches }: BranchesProps) {
     setSelectedServices(services);
   };
 
+  console.log("selected services", selectedServices);
   const handleStylistChange = (selectedStylist: Stylist) => {
     console.log("Selected stylist data:", selectedStylist);
     setStylist(selectedStylist);
@@ -142,60 +148,53 @@ export default function BookingPage({ branches }: BranchesProps) {
     setGuests(guests);
   };
 
-  const checkStylistAvailability = async () => {
-    if (!date || !time) {
+  const submitReservation = async () => {
+    if (selectedServices.length === 0) {
+      setToast({
+        isOpen: true,
+        message: "Please select a service to complete your reservation",
+        type: "error",
+      });
       return;
     }
-
-    const totalDuration = selectedServices.reduce(
-      (total, service) => total + Number(service.duration),
-      0
-    );
-
-    const startTime = new Date(`${date} ${time}:00`);
-    const endTime = new Date(startTime.getTime() + totalDuration * 60000);
-
-    try {
-      const response = await fetch("/api/check-stylist-availability", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          stylistIds: stylists.map((st) => st.id),
-          startTime,
-          endTime,
-        }),
-      });
-
-      const result = await response.json();
-      console.log("Stylist Availability:", result);
-      setAvailability(result);
-    } catch (error) {
-      console.error("Error checking stylist availability:", error);
-    }
-  };
-
-  useEffect(() => {
-    checkStylistAvailability();
-  }, [date, time, selectedServices]);
-
-  const submitReservation = async () => {
     if (!isLoggedIn) {
-      alert("Please log in to complete your reservation.");
+      setToast({
+        isOpen: true,
+        message: "Please log in to complete your reservation",
+        type: "error",
+      });
       redirect("/signin");
       return;
     }
 
     if (!branchName) {
-      alert("Please select a branch.");
+      setToast({
+        isOpen: true,
+        message: "Please select a branch to complete your reservation",
+        type: "error",
+      });
       return;
     }
 
     if (!stylist) {
-      alert("Please select a stylist.");
+      setToast({
+        isOpen: true,
+        message: "Please select a stylist to complete your reservation",
+        type: "error",
+      });
       return;
     }
+
+    if (!date || !time) {
+      setToast({
+        isOpen: true,
+        message: "Please select date and time to complete your reservation",
+        type: "error",
+      });
+      return;
+    }
+
+    setIsLoading(true);
 
     const totalDuration = selectedServices.reduce(
       (total, service) => total + Number(service.duration),
@@ -204,7 +203,7 @@ export default function BookingPage({ branches }: BranchesProps) {
 
     const startTime = new Date(`${date} ${time}:00`);
     const endTime = new Date(startTime.getTime() + totalDuration * 60000);
-
+    const endTimeIso = endTime.toISOString();
     const servicesTotalPrice = selectedServices.reduce(
       (total, service) => total + Number(service.price),
       0
@@ -222,7 +221,7 @@ export default function BookingPage({ branches }: BranchesProps) {
       stylistId: stylist.id,
       date,
       time,
-      endTime,
+      endTime: endTimeIso,
       userId: session.user.id,
       totalPrice: totalPrice.toString(),
     };
@@ -242,9 +241,12 @@ export default function BookingPage({ branches }: BranchesProps) {
       console.log("Is Available:", availability);
 
       if (!availability.isAvailable) {
-        alert(
-          "The selected stylist is not available for the chosen time. Please select a different time or stylist."
-        );
+        setToast({
+          isOpen: true,
+          message:
+            "The selected stylist is not available for the chosen time. Please select a different time or stylist",
+          type: "error",
+        });
         return;
       }
 
@@ -257,16 +259,40 @@ export default function BookingPage({ branches }: BranchesProps) {
       });
 
       if (!createResponse.ok) {
-        throw new Error("Failed to create reservation");
+        const errorText = await createResponse.text();
+        console.error("Failed to create reservation:", errorText);
+        setToast({
+          isOpen: true,
+          message: "Failed to create reservation" + errorText,
+          type: "error",
+        });
+        return;
       }
 
       const result = await createResponse.json();
       console.log(result);
-      alert("Reservation created successfully!");
+
+      setToast({
+        isOpen: true,
+        message: "Reservation created successfully!",
+        type: "success",
+      });
     } catch (error) {
       console.error("Error:", error);
       console.log(error);
-      alert("Failed to create reservation");
+      setToast({
+        isOpen: true,
+        message: "Failed to create reservation",
+        type: "error",
+      });
+    } finally {
+      setSelectedServices([]);
+      setGuests([]);
+      setStylist(null);
+      setDate("");
+      setTime("");
+      setSelectedStylistId(null);
+      setIsLoading(false);
     }
   };
 
@@ -315,6 +341,10 @@ export default function BookingPage({ branches }: BranchesProps) {
       (guests.length > 0 &&
         guests.every((guest) => guest.name && guest.phone)));
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <div className="flex flex-col justify-center items-center pt-32 w-full px-10 md:px-20">
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
@@ -359,22 +389,26 @@ export default function BookingPage({ branches }: BranchesProps) {
               </select>
             </div>
           </div>
-          <Guests
+          {/* <Guests
             isLoggedIn={isLoggedIn}
             user={user}
             onGuestsChange={handleGuestsChange}
             guestNumber={guestNumber}
             setGuestNumber={setGuestNumber}
-          />
+          /> */}
           <div>
-            <div className="text-3xl font-bold mb-4">Select the Service</div>
+            <div className="text-3xl font-bold mb-4 mt-4 text-white">
+              Select the Service
+            </div>
             <ServicesMenu
               serviceData={services}
               onSelectionChange={handleServiceSelectionChange}
             />
           </div>
           <div>
-            <div className="text-3xl font-bold mt-8 mb-4 text-white">Select Date</div>
+            <div className="text-3xl font-bold mt-8 mb-4 text-white">
+              Select Date
+            </div>
             {renderDateInput()}
           </div>
           <DateAndTimeSelection
@@ -384,7 +418,9 @@ export default function BookingPage({ branches }: BranchesProps) {
             setSelectedTime={setTime}
           />
           <div>
-            <div className="text-3xl font-bold mt-8 mb-3 text-white">Stylist</div>
+            <div className="text-3xl font-bold mt-8 mb-3 text-white">
+              Stylist
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full">
               {stylists.map((stylist) => (
                 <div
@@ -409,8 +445,12 @@ export default function BookingPage({ branches }: BranchesProps) {
                       {stylist.name[0].toUpperCase()}
                     </div>
                     <div className="ml-2">
-                      <h3 className="text-lg font-bold text-white">{stylist.name}</h3>
-                      <p className="text-white">{formatRupiah(Number(stylist.price))}</p>
+                      <h3 className="text-lg font-bold text-white">
+                        {stylist.name}
+                      </h3>
+                      <p className="text-white">
+                        {formatRupiah(Number(stylist.price))}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -468,6 +508,12 @@ export default function BookingPage({ branches }: BranchesProps) {
           </button>
         </div>
       </div>
+      <Toast
+        isOpen={toast.isOpen}
+        message={toast.message}
+        type={toast.type}
+        closeToast={() => setToast({ ...toast, isOpen: false })}
+      />
     </div>
   );
 }
