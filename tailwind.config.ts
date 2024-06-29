@@ -24,6 +24,9 @@ const config: Config = {
           "100%": { transform: "translateY(0px)" },
         },
       },
+      animation: {
+        'slidetopbot': 'slidetopbot 1s ease-in-out',
+      },
       colors:{
         'custom-green' : "#64ffda",
         red: "#E50914",

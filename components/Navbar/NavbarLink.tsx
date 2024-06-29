@@ -21,10 +21,10 @@ const NavbarLink = ({ navlink, value }: NavbarLinkProps) => {
   };
 
   return (
-    <a href={navlink} onClick={handleClick} className="text-2xl">
+    <a href={navlink} onClick={handleClick} className="text-xl lg:text-2xl tracking-tighter">
       {value}
     </a>
-  );
+  ); 
 };
 
 export default NavbarLink;

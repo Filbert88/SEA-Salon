@@ -33,6 +33,7 @@ const Navbar = () => {
   const [navbarBg, setNavbarBg] = useState("bg-transparent");
   const [isMobile, setIsMobile] = useState(false);
 
+
   useEffect(() => {
     const handleScroll = () => {
       const isScrolled = window.scrollY > 50;
@@ -93,20 +94,20 @@ const Navbar = () => {
 
   const authButton =
     status === "loading" ? (
-      <div className="font-spacemono ml-2 lg:ml-4 border-2 border-[#64ffda] text-[#64ffda] lg:text-[17px] rounded-lg px-5 py-3">
+      <div className="font-spacemono border-2 border-[#64ffda] text-[#64ffda] lg:text-[17px] rounded-lg px-5 py-3">
         Sign Out
       </div>
     ) : session ? (
       <button
         onClick={handleSignOut}
-        className="font-spacemono ml-2 lg:ml-4 border-2 border-[#64ffda] text-[#64ffda] lg:text-[17px] rounded-lg px-5 py-3 hover:scale-110 transition-all duration-300 hover:shadow-[3px_3px_0px_0px_#64ffda]"
+        className="font-spacemono border-2 border-[#64ffda] text-[#64ffda] lg:text-[17px] rounded-lg px-5 py-3 hover:scale-110 transition-all duration-300 hover:shadow-[3px_3px_0px_0px_#64ffda]"
       >
         Sign Out
       </button>
     ) : (
       <Link
         href="/signin"
-        className="font-spacemono ml-2 lg:ml-4 border-2 border-[#64ffda] text-[#64ffda] lg:text-[17px] rounded-lg px-5 py-3 hover:scale-110 transition-all duration-300 hover:shadow-[3px_3px_0px_0px_#64ffda]"
+        className="font-spacemono border-2 border-[#64ffda] text-[#64ffda] lg:text-[17px] rounded-lg px-5 py-3 hover:scale-110 transition-all duration-300 hover:shadow-[3px_3px_0px_0px_#64ffda]"
       >
         Sign In
       </Link>
@@ -144,7 +145,7 @@ const Navbar = () => {
         </div>
 
         <div className="menu hidden md:block md:w-auto" id="navbar">
-          <ul className="flex p-2 md:p-0 md:flex-row md:space-x-4 mt-0 items-center">
+          <ul className="flex p-2 md:p-0 md:flex-row md:space-x-5 mt-0 items-center">
             {navLinkarr.map((link, index) => (
               <li key={index}>
                 <NavbarLink navlink={link.path} value={link.link} />
@@ -156,7 +157,7 @@ const Navbar = () => {
       </div>
       {openNavbar && (
         <div
-          className="fixed top-0 right-0 bottom-0 left-0 bg-black opacity-80 z-1"
+          className="bg-black"
           onClick={() => setOpenNavbar(false)}
         ></div>
       )}
