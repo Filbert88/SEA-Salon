@@ -20,8 +20,8 @@ interface Stylist {
 interface BranchDetails {
   name: string;
   description: string;
-  openingTime: string;
-  closingTime: string;
+  openingTime: Date;
+  closingTime: Date;
   location: string;
   phone: string;
   stylists: Stylist[];
@@ -37,6 +37,23 @@ const BranchDetailComponent: React.FC<BranchDetails> = ({
   stylists,
 }) => {
   const router = useRouter();
+
+  const formatTime = (date: Date) => {
+    // Create a new Date object from the input
+    const utcDate = new Date(date);
+  
+    // Get UTC hours and minutes
+    const utcHours = utcDate.getUTCHours();
+    const utcMinutes = utcDate.getUTCMinutes();
+  
+    // Calculate UTC+7 time
+    utcDate.setHours(utcHours + 7);
+  
+    // Return the formatted time as a string
+    return utcDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+  };
+  
+
   const getGoogleMapsEmbedUrl = (location: string) => {
     const formattedLocation = encodeURIComponent(location);
     return `https://www.google.com/maps?q=${formattedLocation}&output=embed`;
@@ -81,7 +98,7 @@ const BranchDetailComponent: React.FC<BranchDetails> = ({
                 <MdAccessTime className="mr-2" size={24} />
               </div>
               <div>
-                {openingTime} - {closingTime}
+                {formatTime(openingTime)} - {formatTime(closingTime)}
               </div>
             </div>
             <div className="flex flex-row items-center gap-2">

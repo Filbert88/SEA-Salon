@@ -1,8 +1,10 @@
-import React from "react";
+"use client"
+import React,{useState} from "react";
 import BranchCard from "@/components/Branch/BranchCard";
 import { db } from "@/lib/db";
 
 export default async function BranchPage() {
+  const [loading, setLoading] = useState(false);
   const branches = await db.branch.findMany({
     select: {
       name: true,

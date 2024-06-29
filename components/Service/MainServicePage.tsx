@@ -27,7 +27,7 @@ export default function MainServicePage({services}:servicesProps) {
 
   return (
     <div className="container mx-auto" id="service">
-    <div className='text-center text-5xl font-bold mb-8'>Explore Our Services</div>
+    <div className='text-center text-5xl font-bold mb-8 text-white'>Explore Our Services</div>
       <Slider {...settings}>
         {services.map((service, index) => (
           <div key={index}>

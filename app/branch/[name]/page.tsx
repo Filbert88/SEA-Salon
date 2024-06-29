@@ -1,15 +1,9 @@
 import { db } from "@/lib/db";
 import BranchDetailComponent from "@/components/Branch/BranchDetail";
 
-function formatTime(timeString:Date) {
-  const date = new Date(timeString);
-  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-}
-
 function formatPrice(price: number): string {
   return `${Math.round(price / 1000)}K`;
 }
-
 
 export default async function BranchDetailPage({ params }: { params: { name: string } }){
   const { name } = params;
@@ -39,9 +33,6 @@ export default async function BranchDetailPage({ params }: { params: { name: str
     return <p>Branch not found</p>;
   }
 
-  const formattedOpeningTime = formatTime(data.openingTime);
-  const formattedClosingTime = formatTime(data.closingTime);
-
   const stylists = data.stylists.map(stylist => ({
     ...stylist,
     price: formatPrice(Number(stylist.price)), 
@@ -51,8 +42,8 @@ export default async function BranchDetailPage({ params }: { params: { name: str
     <BranchDetailComponent
       name={data.name}
       description={data.description}
-      openingTime={formattedOpeningTime}
-      closingTime={formattedClosingTime}
+      openingTime={data.openingTime}
+      closingTime={data.closingTime}
       location={data.location}
       phone={data.phone}
       stylists={stylists}
