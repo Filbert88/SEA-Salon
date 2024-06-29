@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import StylistCard from "@/components/Branch/StylistCard";
 import React from "react";
 import { useRouter } from "next/navigation";
@@ -39,20 +39,18 @@ const BranchDetailComponent: React.FC<BranchDetails> = ({
   const router = useRouter();
 
   const formatTime = (date: Date) => {
-    // Create a new Date object from the input
     const utcDate = new Date(date);
-  
-    // Get UTC hours and minutes
+
     const utcHours = utcDate.getUTCHours();
-    const utcMinutes = utcDate.getUTCMinutes();
-  
-    // Calculate UTC+7 time
+
     utcDate.setHours(utcHours + 7);
-  
-    // Return the formatted time as a string
-    return utcDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+
+    return utcDate.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
   };
-  
 
   const getGoogleMapsEmbedUrl = (location: string) => {
     const formattedLocation = encodeURIComponent(location);
@@ -68,8 +66,10 @@ const BranchDetailComponent: React.FC<BranchDetails> = ({
     <div className="flex justify-center items-center flex-col pt-32 px-4">
       <div className="max-w-6xl w-full">
         <div>
-          <h1 className="font-bold text-5xl text-white mb-4">SEA SALON {name}</h1>
-          <p className="text-xl text-white text-justify">{description}</p>
+          <h1 className="font-bold text-3xl sm:text-5xl text-center text-white mb-4 ">
+            SEA SALON {name}
+          </h1>
+          <p className="text-xl text-white text-justify leading-tight">{description}</p>
         </div>
         <div className="mt-8">
           <iframe
@@ -84,9 +84,14 @@ const BranchDetailComponent: React.FC<BranchDetails> = ({
         </div>
         <div className="border-2 border-white mt-8">
           <div className="border-b-2 border-white flex justify-center flex-col items-center p-2">
-            <div className="text-2xl font-bold text-white text-center">SEA SALON - {name}</div>
+            <div className="text-2xl font-bold text-white text-center">
+              SEA SALON - {name}
+            </div>
             <div className="flex justify-center flex-row mt-4 mb-4">
-              <button className="p-3 bg-red rounded-lg flex items-center text-white" onClick={() => handleNavigation('/booking')}>
+              <button
+                className="p-3 bg-red rounded-lg flex items-center text-white"
+                onClick={() => handleNavigation("/booking")}
+              >
                 <MdBookOnline className="mr-2" />
                 Book Now
               </button>
@@ -116,7 +121,9 @@ const BranchDetailComponent: React.FC<BranchDetails> = ({
           </div>
         </div>
         <div className="flex flex-col mt-16">
-          <div className="text-6xl text-center mb-8 font-bold text-white">Our Stylist</div>
+          <div className="text-6xl text-center mb-8 font-bold text-white">
+            Our Stylist
+          </div>
           {stylists.map((stylist) => (
             <StylistCard
               key={stylist.id}

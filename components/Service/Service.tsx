@@ -40,7 +40,7 @@ export default function ServicePage({services} : servicesProps) {
 
   return (
     <div className="container mx-auto mt-32 mb-32 px-10">
-      <h1 className="text-5xl text-center font-bold mb-8 text-white">Our Services</h1>
+      <h1 className="text-7xl text-center font-bold mb-8 text-white">Our Services</h1>
       <Slider {...settings}>
         {services.map((card) => (
           <div key={card.id} className="px-2">

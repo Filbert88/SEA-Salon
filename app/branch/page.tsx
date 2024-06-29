@@ -1,10 +1,8 @@
-"use client"
-import React,{useState} from "react";
+import React from "react";
 import BranchCard from "@/components/Branch/BranchCard";
 import { db } from "@/lib/db";
 
 export default async function BranchPage() {
-  const [loading, setLoading] = useState(false);
   const branches = await db.branch.findMany({
     select: {
       name: true,
@@ -13,8 +11,8 @@ export default async function BranchPage() {
   });
   return (
     <div className="px-4 sm:px-40 pt-32 flex flex-col justify-center items-center mb-8">
-      <div className="text-7xl text-white">Our Branches</div>
-      <div className="mt-6 text-xl text-white">
+      <div className="text-4xl text-center sm:text-7xl text-white">Our Branches</div>
+      <div className="mt-6 text-xl text-white text-justify">
         Welcome to our Branch Section! At SEA-SALON, we have established various
         branches to cater to the diverse needs of our valued customers. Our
         branches are staffed with skilled professionals who are passionate about
