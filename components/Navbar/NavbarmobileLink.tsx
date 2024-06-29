@@ -9,11 +9,15 @@ interface NavLink {
 interface NavbarmobileLinkProps {
   links: NavLink[];
   handleLinkClick: (path: string) => void;
+  session: any;
+  signOut: (e: React.MouseEvent<HTMLButtonElement>) => void; 
 }
 
 const NavbarmobileLink = ({
   links,
   handleLinkClick,
+  session,
+  signOut,
 }: NavbarmobileLinkProps) => {
   const [isMobile, setIsMobile] = useState(false);
 
@@ -41,16 +45,32 @@ const NavbarmobileLink = ({
         </li>
       ))}
       <li className="z-30">
-        <a
-          href="/signin"
-          className={`z-30 mb-4 mt-10 font-spacemono border-2 border-[#64ffda] text-[#64ffda] text-[14px] rounded-lg px-4 py-2 ${
-            isMobile
-              ? ""
-              : "hover:scale-110 transition-all duration-300 hover:shadow-[3px_3px_0px_0px_#64ffda]"
-          }`}
-        >
-          Sign in
-        </a>
+        {session ? (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              signOut(e);
+            }}
+            className={`z-30 mb-4 mt-10 font-spacemono border-2 border-[#64ffda] text-[#64ffda] text-[14px] rounded-lg px-4 py-2 ${
+              isMobile
+                ? ""
+                : "hover:scale-110 transition-all duration-300 hover:shadow-[3px_3px_0px_0px_#64ffda]"
+            }`}
+          >
+            Sign Out
+          </button>
+        ) : (
+          <a
+            href="/signin"
+            className={`z-30 mb-4 mt-10 font-spacemono border-2 border-[#64ffda] text-[#64ffda] text-[14px] rounded-lg px-4 py-2 ${
+              isMobile
+                ? ""
+                : "hover:scale-110 transition-all duration-300 hover:shadow-[3px_3px_0px_0px_#64ffda]"
+            }`}
+          >
+            Sign In
+          </a>
+        )}
       </li>
     </ul>
   );

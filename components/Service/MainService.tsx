@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface MainServiceProps {
   title: string;
@@ -12,16 +13,27 @@ export default function MainServiceComponent({
   desc,
   imageUrl,
 }: MainServiceProps) {
+  const router = useRouter();
+  const handleNavigation = () => {
+    router.push(`/service/${title}`);
+  };
+  const handleSeeAll = () => {
+    router.push("/service")
+  }
   return (
     <div className="grid md:grid-cols-4 gap-8 p-6 min-h-[400px]">
       <div className="md:col-span-2 flex flex-col gap-4 justify-center items-center md:items-start md:ml-8">
-        <div className="font-bold text-3xl sm:text-5xl md:text-start text-center text-white">{title}</div>
-        <div className="text-lg sm:text-xl text-justify text-white">{desc}</div>
+        <div className="font-bold text-3xl sm:text-5xl md:text-start text-center text-white">
+          {title}
+        </div>
+        <div className="text-lg sm:text-xl text-justify text-white line-clamp-3">
+          {desc}
+        </div>
         <div className="flex flex-row gap-8">
-          <button className="rounded-lg bg-custom-green text-black p-3">
+          <button className="rounded-lg bg-custom-green text-black p-3" onClick={handleNavigation}>
             Learn More
           </button>
-          <button className="rounded-lg bg-custom-green text-black p-3">
+          <button className="rounded-lg bg-custom-green text-black p-3" onClick={handleSeeAll}>
             See All
           </button>
         </div>

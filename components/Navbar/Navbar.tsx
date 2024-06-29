@@ -20,10 +20,12 @@ const navLinkarr = [
     path: "/branch",
   },
   {
-    link: "Reservation",
+    link: "My Reservation",
     path: "/reservation",
   },
 ];
+
+
 
 const Navbar = () => {
   const { data: session, status } = useSession();
@@ -79,8 +81,15 @@ const Navbar = () => {
 
   const handleSignOut = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    await signOut();
+    
+    await signOut({
+      redirect: false, 
+      callbackUrl: '/' 
+    });
+    
+    window.location.href = '/';
   };
+  
 
   const authButton =
     status === "loading" ? (
@@ -155,6 +164,8 @@ const Navbar = () => {
         <NavbarmobileLink
           links={navLinkarr}
           handleLinkClick={handleMobileLinkClick}
+          session={session}
+          signOut={handleSignOut}
         />
       ) : null}
     </nav>

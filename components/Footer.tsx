@@ -6,16 +6,16 @@ const Footer: React.FC = () => {
       <div className="flex max-w-[960px] flex-1 flex-col">
         <footer className="flex flex-col gap-6 px-5 py-10 text-center">
           <div className="flex flex-wrap items-center justify-center gap-6 text-custom-green">
-            <a className=" leading-normal min-w-40" href="#">
+            <a className=" leading-normal min-w-40" href="/">
               Home
             </a>
-            <a className="leading-normal min-w-40" href="#">
+            <a className="leading-normal min-w-40" href="#service">
               Services
             </a>
-            <a className="leading-normal min-w-40" href="#">
-              About Us
+            <a className="leading-normal min-w-40" href="#review">
+              Reviews
             </a>
-            <a className="leading-normal min-w-40" href="#">
+            <a className="leading-normal min-w-40" href="#contact">
               Contact
             </a>
           </div>

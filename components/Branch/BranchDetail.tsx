@@ -49,7 +49,7 @@ const BranchDetailComponent: React.FC<BranchDetails> = ({
   };
   return (
     <div className="flex justify-center items-center flex-col pt-32 px-4">
-      <div className="max-w-6xl">
+      <div className="max-w-6xl w-full">
         <div>
           <h1 className="font-bold text-5xl text-white mb-4">SEA SALON {name}</h1>
           <p className="text-xl text-white text-justify">{description}</p>

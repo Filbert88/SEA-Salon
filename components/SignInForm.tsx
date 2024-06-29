@@ -1,8 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter ,redirect} from "next/navigation";
 import Image from "next/image";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Toast from "./Toast";
 import { ToastState } from "./Toast";
 import Loading from "./Loading";
@@ -19,6 +19,7 @@ interface Touched {
 
 const Signin: React.FC = () => {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -74,6 +75,16 @@ const Signin: React.FC = () => {
     }
     return "";
   };
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      if (session?.user?.role === 'ADMIN') {
+        router.push('/dashboard');
+      } else {
+        router.push('/');
+      }
+    }
+  }, [session, status, router]);
 
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>
