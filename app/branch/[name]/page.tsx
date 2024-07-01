@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import BranchDetailComponent from "@/components/Branch/BranchDetail";
+import { notFound } from "next/navigation";
 
 function formatPrice(price: number): string {
   return `${Math.round(price / 1000)}K`;
@@ -30,7 +31,8 @@ export default async function BranchDetailPage({ params }: { params: { name: str
   });
 
   if (!data) {
-    return <p>Branch not found</p>;
+    notFound();
+    return ;
   }
 
   const stylists = data.stylists.map(stylist => ({

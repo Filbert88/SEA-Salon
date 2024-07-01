@@ -10,7 +10,7 @@ export default async function BranchPage() {
     },
   });
   return (
-    <div className="px-4 sm:px-40 pt-32 flex flex-col justify-center items-center mb-8">
+    <div className="px-10 sm:px-20 lg:px-40 pt-32 flex flex-col justify-center items-center mb-8">
       <div className="text-4xl text-center sm:text-7xl text-white">Our Branches</div>
       <div className="mt-6 text-xl text-white text-justify">
         Welcome to our Branch Section! At SEA-SALON, we have established various

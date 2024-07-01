@@ -33,8 +33,8 @@ export default async function DashboardWrapper() {
     .then((stylists) =>
       stylists.map((stylist) => ({
         ...stylist,
-        price: stylist.price.toString(), 
-        imageUrl: stylist.imageUrl || null, 
+        price: stylist.price.toString(),
+        imageUrl: stylist.imageUrl || null,
       }))
     );
 
@@ -49,10 +49,45 @@ export default async function DashboardWrapper() {
     closingTime: branch.closingTime.toISOString(),
   }));
 
+  const servicesPromise = db.service.findMany({
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      price: true,
+      imageUrl: true,
+    },
+  }).then((services) =>
+    services.map((service) => ({
+      ...service,
+      price: service.price.toString(),
+    }))
+  );
+
+  const services = await servicesPromise;
+
+  const allStylist = db.stylist.findMany({
+    select:{
+      id:true,
+      name:true,
+      imageUrl:true,
+      price:true,
+    }
+  }).then((stylists) =>
+    stylists.map((stylist) => ({
+      ...stylist,
+      price: stylist.price.toString(),
+    }))
+  )
+
+  const stylists = await allStylist;
+
   return (
     <DashboardPage
       branches={branchesWithFormattedDates}
       unassignedStylists={unassignedStylists}
+      services={services}
+      stylists={stylists}
     />
   );
 }

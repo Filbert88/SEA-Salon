@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import ServiceDetailComponent from "@/components/Service/ServiceDetail";
+import { notFound } from "next/navigation";
 
 export default async function ServiceDetailPage({
   params,
@@ -21,7 +22,8 @@ export default async function ServiceDetailPage({
   });
 
   if (!data) {
-    return <p>Service not found</p>;
+    notFound();
+    return;
   }
 
   const defaultImageUrl = "/tes.jpg";
