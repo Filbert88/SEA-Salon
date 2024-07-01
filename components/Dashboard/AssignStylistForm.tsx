@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Toast from "../Toast";
 import { ToastState } from "../Toast";
-import Loading from "../Loading";
 
 interface Stylist {
   id: number;
@@ -17,6 +16,8 @@ interface Branch {
 interface AssignStylistFormProps {
   unassignedStylists: Stylist[];
   branches: Branch[];
+  setLoading: (isLoading: boolean) => void;
+  setToast: (toast: ToastState) => void; 
 }
 
 interface FormErrors {
@@ -27,16 +28,12 @@ interface FormErrors {
 const AssignStylistForm = ({
   unassignedStylists,
   branches,
+  setLoading,
+  setToast
 }: AssignStylistFormProps) => {
   const [selectedStylists, setSelectedStylists] = useState<number[]>([]);
   const [selectedBranch, setSelectedBranch] = useState<string | null>(null);
   const [errors, setErrors] = useState<FormErrors>({});
-  const [toast, setToast] = useState<ToastState>({
-    isOpen: false,
-    message: "",
-    type: "info",
-  });
-  const [loading, setLoading] = useState<boolean>(false);
 
   const validateForm = () => {
     const newErrors: FormErrors = {};
@@ -111,10 +108,6 @@ const AssignStylistForm = ({
     }).format(amount);
   };
 
-  if (loading) {
-    return <Loading />;
-  }
-
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <h2 className="text-xl font-semibold">Assign Stylists to Branch</h2>
@@ -162,12 +155,7 @@ const AssignStylistForm = ({
       >
         Assign Stylists
       </button>
-      <Toast
-        isOpen={toast.isOpen}
-        message={toast.message}
-        type={toast.type}
-        closeToast={() => setToast({ ...toast, isOpen: false })}
-      />
+
     </form>
   );
 };

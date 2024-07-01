@@ -17,6 +17,8 @@ interface Branch {
 
 interface BranchesProps {
   branches: Branch[];
+  setLoading: (isLoading: boolean) => void;
+  setToast: (toast: ToastState) => void
 }
 
 interface FormErrors {
@@ -25,18 +27,12 @@ interface FormErrors {
   file?: string;
 }
 
-const StylistForm = ({ branches }: BranchesProps) => {
+const StylistForm = ({ branches, setLoading, setToast }: BranchesProps) => {
   const [name, setName] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [price, setPrice] = useState("");
   const [selectedBranch, setSelectedBranch] = useState<string | null>(null);
   const [errors, setErrors] = useState<FormErrors>({});
-  const [toast, setToast] = useState<ToastState>({
-    isOpen: false,
-    message: "",
-    type: "info",
-  });
-  const [loading, setLoading] = useState<boolean>(false);
 
   console.log("ini selected", selectedBranch);
 
@@ -144,10 +140,6 @@ const StylistForm = ({ branches }: BranchesProps) => {
     }
   };
 
-  if(loading){
-    return <Loading />
-  }
-
   const InfoIcon = () => (
     <div className="relative flex items-center group hover:cursor-pointer">
       <svg
@@ -217,12 +209,6 @@ const StylistForm = ({ branches }: BranchesProps) => {
       >
         Add Stylist
       </button>
-      <Toast
-        isOpen={toast.isOpen}
-        message={toast.message}
-        type={toast.type}
-        closeToast={() => setToast({ ...toast, isOpen: false })}
-      />
     </form>
   );
 };

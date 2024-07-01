@@ -16,9 +16,11 @@ interface Service {
 
 interface ServiceProps {
   services: Service[];
+  setLoading: (isLoading: boolean) => void;
+  setToast: (toast: ToastState) => void
 }
 
-const ServiceEditForm = ({ services }: ServiceProps) => {
+const ServiceEditForm = ({ services, setLoading, setToast }: ServiceProps) => {
   const [selectedServiceId, setSelectedServiceId] = useState<number | null>(
     null
   );
@@ -26,11 +28,6 @@ const ServiceEditForm = ({ services }: ServiceProps) => {
   const [file, setFile] = useState<File | null>(null);
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
-  const [toast, setToast] = useState<ToastState>({
-    isOpen: false,
-    message: "",
-    type: "info",
-  });
 
   const handleServiceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const id = parseInt(e.target.value, 10);
@@ -44,6 +41,8 @@ const ServiceEditForm = ({ services }: ServiceProps) => {
   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setLoading(true);
     try {
       const imageUrl = await uploadFileToCloudinary(file);
 
@@ -82,6 +81,8 @@ const ServiceEditForm = ({ services }: ServiceProps) => {
         type: "error",
       });
       console.error("Failed to submit form:", error);
+    } finally{
+      setLoading(false);
     }
   };
 
@@ -142,13 +143,6 @@ const ServiceEditForm = ({ services }: ServiceProps) => {
             </button>
           </>
         )}
-
-        <Toast
-          isOpen={toast.isOpen}
-          message={toast.message}
-          type={toast.type}
-          closeToast={() => setToast({ ...toast, isOpen: false })}
-        />
       </form>
     </div>
   );

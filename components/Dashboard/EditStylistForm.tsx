@@ -15,20 +15,17 @@ interface Stylist {
 
 interface StylistProps {
   stylists: Stylist[];
+  setLoading: (isLoading: boolean) => void;
+  setToast: (toast: ToastState) => void;
 }
 
-const StylistEditForm = ({ stylists }: StylistProps) => {
+const StylistEditForm = ({ stylists, setLoading, setToast }: StylistProps) => {
   const [selectedStylistId, setSelectedStylistId] = useState<number | null>(
     null
   );
   const [name, setName] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [price, setPrice] = useState("");
-  const [toast, setToast] = useState<ToastState>({
-    isOpen: false,
-    message: "",
-    type: "info",
-  });
 
   const handleStylistChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const id = parseInt(e.target.value, 10);
@@ -41,11 +38,13 @@ const StylistEditForm = ({ stylists }: StylistProps) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setLoading(true);
     try {
       const imageUrl = await uploadFileToCloudinary(file);
 
       const data = {
-        id:selectedStylistId,
+        id: selectedStylistId,
         name,
         imageUrl,
         price,
@@ -78,6 +77,8 @@ const StylistEditForm = ({ stylists }: StylistProps) => {
         type: "error",
       });
       console.error("Failed to submit form:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -128,12 +129,6 @@ const StylistEditForm = ({ stylists }: StylistProps) => {
             </button>
           </>
         )}
-        <Toast
-          isOpen={toast.isOpen}
-          message={toast.message}
-          type={toast.type}
-          closeToast={() => setToast({ ...toast, isOpen: false })}
-        />
       </form>
     </div>
   );

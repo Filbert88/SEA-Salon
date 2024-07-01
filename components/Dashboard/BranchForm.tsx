@@ -4,7 +4,6 @@ import Modal from "../Modal";
 import NoBranchStylistForm from "./StylistNForm";
 import Toast from "../Toast";
 import { ToastState } from "../Toast";
-import Loading from "../Loading";
 
 interface Stylist {
   id: number;
@@ -19,6 +18,8 @@ interface Service {
 interface BranchFormProps {
   unassignedStylists: Stylist[];
   services: Service[];
+  setLoading: (isLoading: boolean) => void;
+  setToast: (toast: ToastState) => void;
 }
 
 interface FormErrors {
@@ -34,6 +35,8 @@ interface FormErrors {
 const BranchForm: React.FC<BranchFormProps> = ({
   unassignedStylists,
   services,
+  setLoading,
+  setToast
 }) => {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
@@ -44,11 +47,6 @@ const BranchForm: React.FC<BranchFormProps> = ({
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedStylists, setSelectedStylists] = useState<number[]>([]);
   const [errors, setErrors] = useState<FormErrors>({});
-  const [toast, setToast] = useState<ToastState>({
-    isOpen: false,
-    message: "",
-    type: "info",
-  });
 
   const handleStylistSelect = (stylistId: number) => {
     if (selectedStylists.includes(stylistId)) {
@@ -93,7 +91,8 @@ const BranchForm: React.FC<BranchFormProps> = ({
       phone,
       selectedStylists,
     };
-
+    
+    setLoading(true)
     const response = await fetch("/api/admin/branches", {
       method: "POST",
       headers: {
@@ -107,6 +106,8 @@ const BranchForm: React.FC<BranchFormProps> = ({
     } else {
       console.error("Error adding branch");
     }
+
+    setLoading(false);
   };
 
   return (
@@ -227,12 +228,6 @@ const BranchForm: React.FC<BranchFormProps> = ({
             </button>
           </div>
         )}
-        <Toast
-          isOpen={toast.isOpen}
-          message={toast.message}
-          type={toast.type}
-          closeToast={() => setToast({ ...toast, isOpen: false })}
-        />
       </form>
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
         <NoBranchStylistForm />

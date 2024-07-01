@@ -17,7 +17,8 @@ interface Branch {
 
 interface BranchesProps {
   branches: Branch[];
-  setLoading: (isLoading: boolean) => void 
+  setLoading: (isLoading: boolean) => void;
+  setToast: (toast: ToastState) => void
 }
 
 interface FormErrors {
@@ -29,7 +30,7 @@ interface FormErrors {
   branches?: string;
 }
 
-const ServiceForm = ({ branches, setLoading }: BranchesProps) => {
+const ServiceForm = ({ branches, setLoading,setToast }: BranchesProps) => {
   const [name, setName] = useState("");
   const [duration, setDuration] = useState("");
   const [imageURL, setImageURL] = useState("");
@@ -38,11 +39,6 @@ const ServiceForm = ({ branches, setLoading }: BranchesProps) => {
   const [description, setDescription] = useState("");
   const [selectedBranches, setSelectedBranches] = useState<number[]>([]);
   const [errors, setErrors] = useState<FormErrors>({});
-  const [toast, setToast] = useState<ToastState>({
-    isOpen: false,
-    message: "",
-    type: "info",
-  });
 
   const handleBranchSelect = (branchId: number) => {
     setSelectedBranches(prevSelected => {
@@ -251,12 +247,6 @@ const ServiceForm = ({ branches, setLoading }: BranchesProps) => {
       >
         Add Service
       </button>
-      <Toast
-        isOpen={toast.isOpen}
-        message={toast.message}
-        type={toast.type}
-        closeToast={() => setToast({ ...toast, isOpen: false })}
-      />
     </form>
   );
 };

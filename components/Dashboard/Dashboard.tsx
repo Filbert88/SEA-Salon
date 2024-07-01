@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import ServiceForm from "./ServiceForm";
 import BranchForm from "./BranchForm";
@@ -8,6 +8,8 @@ import ServiceEditForm from "./EditServiceForm";
 import StylistEditForm from "./EditStylistForm";
 import BranchEditForm from "./EditBranchForm";
 import Loading from "../Loading";
+import Toast from "../Toast";
+import { ToastState } from "../Toast";
 
 interface Stylist {
   id: number;
@@ -27,11 +29,11 @@ interface Branch {
 }
 
 interface Service {
-  id:number;
-  name:string;
-  description:string;
-  price:string;
-  imageUrl:string | null;
+  id: number;
+  name: string;
+  description: string;
+  price: string;
+  imageUrl: string | null;
 }
 
 export interface DashboardPageProps {
@@ -41,9 +43,21 @@ export interface DashboardPageProps {
   stylists: Stylist[];
 }
 
-const DashboardPage = ({ branches, unassignedStylists, services, stylists }: DashboardPageProps) => {
-  const [activeForm, setActiveForm] = useState<"add" | "edit" | "delete" | null>(null);
+const DashboardPage = ({
+  branches,
+  unassignedStylists,
+  services,
+  stylists,
+}: DashboardPageProps) => {
+  const [activeForm, setActiveForm] = useState<
+    "add" | "edit" | "delete" | null
+  >(null);
   const [isLoading, setLoading] = useState(false);
+  const [toast, setToast] = useState<ToastState>({
+    isOpen: false,
+    message: "",
+    type: "info",
+  });
 
   if (isLoading) {
     return <Loading />;
@@ -52,22 +66,36 @@ const DashboardPage = ({ branches, unassignedStylists, services, stylists }: Das
   return (
     <div className="pt-32 flex flex-col items-center px-10">
       <div className="max-w-5xl w-full shadow-lg rounded-lg p-6">
-        <h1 className="text-3xl font-bold mb-6 text-center text-white">Admin Dashboard</h1>
+        <h1 className="text-3xl font-bold mb-6 text-center text-white">
+          Admin Dashboard
+        </h1>
         <div className="flex flex-col sm:flex-row sm:space-y-0 space-y-4 justify-around mb-6">
           <button
-            className={`px-4 py-2 rounded ${activeForm === "add" ? "bg-custom-green text-black" : "border-2 border-custom-green"}`}
+            className={`px-4 py-2 rounded ${
+              activeForm === "add"
+                ? "bg-custom-green text-black"
+                : "border-2 border-custom-green"
+            }`}
             onClick={() => setActiveForm("add")}
           >
             Add Data
           </button>
           <button
-            className={`px-4 py-2 rounded ${activeForm === "edit" ? "bg-custom-green text-black" : "border-2 border-custom-green"}`}
+            className={`px-4 py-2 rounded ${
+              activeForm === "edit"
+                ? "bg-custom-green text-black"
+                : "border-2 border-custom-green"
+            }`}
             onClick={() => setActiveForm("edit")}
           >
             Edit Data
           </button>
           <button
-            className={`px-4 py-2 rounded ${activeForm === "delete" ? "bg-custom-green text-black" : "border-2 border-custom-green"}`}
+            className={`px-4 py-2 rounded ${
+              activeForm === "delete"
+                ? "bg-custom-green text-black"
+                : "border-2 border-custom-green"
+            }`}
             onClick={() => setActiveForm("delete")}
           >
             Delete Data
@@ -76,18 +104,28 @@ const DashboardPage = ({ branches, unassignedStylists, services, stylists }: Das
 
         {activeForm === "add" && (
           <div className="flex flex-col gap-8">
-            <ServiceForm branches={branches} setLoading={setLoading} />
-            <AssignStylistForm branches={branches} unassignedStylists={unassignedStylists} />
-            <StylistForm branches={branches} />
-            <BranchForm unassignedStylists={unassignedStylists} services={services} />
+            <ServiceForm branches={branches} setLoading={setLoading} setToast={setToast} />
+            <AssignStylistForm
+              branches={branches}
+              unassignedStylists={unassignedStylists}
+              setLoading={setLoading}
+              setToast={setToast}
+            />
+            <StylistForm branches={branches} setLoading={setLoading} setToast={setToast} />
+            <BranchForm
+              unassignedStylists={unassignedStylists}
+              services={services}
+              setLoading={setLoading}
+              setToast={setToast}
+            />
           </div>
         )}
 
         {activeForm === "edit" && (
           <div className="flex flex-col gap-8">
-            <ServiceEditForm services={services} />
-            <StylistEditForm stylists={stylists} />
-            <BranchEditForm branches={branches} />
+            <ServiceEditForm services={services} setLoading={setLoading} setToast={setToast} />
+            <StylistEditForm stylists={stylists} setLoading={setLoading} setToast={setToast} />
+            <BranchEditForm branches={branches} setLoading={setLoading} setToast={setToast} />
           </div>
         )}
 
@@ -97,6 +135,12 @@ const DashboardPage = ({ branches, unassignedStylists, services, stylists }: Das
           </div>
         )}
       </div>
+      <Toast
+        isOpen={toast.isOpen}
+        message={toast.message}
+        type={toast.type}
+        closeToast={() => setToast({ ...toast, isOpen: false })}
+      />
     </div>
   );
 };

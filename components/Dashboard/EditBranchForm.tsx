@@ -15,9 +15,11 @@ interface Branch {
 
 interface BranchesProps {
   branches: Branch[];
+  setLoading: (isLoading: boolean) => void;
+  setToast: (toast: ToastState) => void
 }
 
-const BranchEditForm = ({ branches }: BranchesProps) => {
+const BranchEditForm = ({ branches, setLoading, setToast }: BranchesProps) => {
   const [selectedBranchId, setSelectedBranchId] = useState<number | null>(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -25,11 +27,6 @@ const BranchEditForm = ({ branches }: BranchesProps) => {
   const [phone, setPhone] = useState("");
   const [openingTime, setOpeningTime] = useState("");
   const [closingTime, setClosingTime] = useState("");
-  const [toast, setToast] = useState<ToastState>({
-    isOpen: false,
-    message: "",
-    type: "info",
-  });
 
   const handleBranchChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const id = parseInt(e.target.value, 10);
@@ -51,6 +48,7 @@ const BranchEditForm = ({ branches }: BranchesProps) => {
       return;
     }
 
+    setLoading(true);
     try {
       const data = {
         id: selectedBranchId,
@@ -89,6 +87,8 @@ const BranchEditForm = ({ branches }: BranchesProps) => {
         type: "error",
       });
       console.error("Failed to submit form:", error);
+    } finally{
+      setLoading(false);
     }
   };
 
@@ -158,12 +158,6 @@ const BranchEditForm = ({ branches }: BranchesProps) => {
             </button>
           </>
         )}
-        <Toast
-          isOpen={toast.isOpen}
-          message={toast.message}
-          type={toast.type}
-          closeToast={() => setToast({ ...toast, isOpen: false })}
-        />
       </form>
     </div>
   );
