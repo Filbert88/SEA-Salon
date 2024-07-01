@@ -10,7 +10,7 @@ const SignInPage = async () => {
     return redirect("/");
   }
   return (
-    <main className="flex flex-auto items-center justify-center bg-black min-h-screen overflow-hidden w-full">
+    <main className="flex flex-auto items-center justify-center bg-black min-h-screen overflow-hidden px-5 sm:px-0 w-full">
       <Signin />
     </main>
   );

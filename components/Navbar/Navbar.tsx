@@ -92,33 +92,43 @@ const Navbar = () => {
   };
   
 
-  const authButton =
-    status === "loading" ? (
-      <div className="font-spacemono border-2 border-[#64ffda] text-[#64ffda] lg:text-[17px] rounded-lg px-5 py-3">
-        Sign Out
-      </div>
-    ) : session ? (
-      <button
-        onClick={handleSignOut}
-        className="font-spacemono border-2 border-[#64ffda] text-[#64ffda] lg:text-[17px] rounded-lg px-5 py-3 hover:scale-110 transition-all duration-300 hover:shadow-[3px_3px_0px_0px_#64ffda]"
-      >
-        Sign Out
-      </button>
-    ) : (
-      <Link
-        href="/signin"
-        className="font-spacemono border-2 border-[#64ffda] text-[#64ffda] lg:text-[17px] rounded-lg px-5 py-3 hover:scale-110 transition-all duration-300 hover:shadow-[3px_3px_0px_0px_#64ffda]"
-      >
-        Sign In
-      </Link>
-    );
-
+  const authButton = () => {
+    if (status === "loading") {
+      return (
+        <button
+          onClick={handleSignOut}
+          className="font-spacemono border-2 border-[#64ffda] text-[#64ffda] lg:text-[17px] rounded-lg px-5 py-3 hover:scale-110 transition-all duration-300 hover:shadow-[3px_3px_0px_0px_#64ffda]"
+        >
+          Sign Out
+        </button>
+      );
+    } else if (session) {
+      return (
+        <button
+          onClick={handleSignOut}
+          className="font-spacemono border-2 border-[#64ffda] text-[#64ffda] lg:text-[17px] rounded-lg px-5 py-3 hover:scale-110 transition-all duration-300 hover:shadow-[3px_3px_0px_0px_#64ffda]"
+        >
+          Sign Out
+        </button>
+      );
+    } else {
+      return (
+        <Link
+          href="/signin"
+          className="font-spacemono border-2 border-[#64ffda] text-[#64ffda] lg:text-[17px] rounded-lg px-6 py-4 hover:scale-110 transition-all duration-300 hover:shadow-[3px_3px_0px_0px_#64ffda]"
+        >
+          Sign In
+        </Link>
+      );
+    }
+  };
+  
   return (
     <nav
       id="navbar"
       className={`fixed top-0 right-0 left-0 z-20 ${navbarBg} bg-opacity-95`}
     >
-      <div className="flex flex-wrap items-center justify-between mx-auto py-6 px-4 custom:px-6 sm:px-16 md:px-8 z-10">
+      <div className="flex flex-auto items-center justify-between mx-auto py-6 px-4 custom:px-6 sm:px-16 md:px-8 z-10 h-24">
         <Link
           href="/"
           className="text-xl custom:text-2xl md:text-3xl lg:text-4xl text-[#64ffda] font-bold hover:scale-110 focus:scale-110 duration-300 transition ease-in-out delay-50 z-10"
@@ -145,13 +155,14 @@ const Navbar = () => {
         </div>
 
         <div className="menu hidden md:block md:w-auto" id="navbar">
-          <ul className="flex p-2 md:p-0 md:flex-row md:space-x-5 mt-0 items-center">
+          <ul className="flex p-2 md:p-0 md:flex-row md:space-x-5 mt-0 items-center h-fit">
             {navLinkarr.map((link, index) => (
               <li key={index}>
                 <NavbarLink navlink={link.path} value={link.link} />
               </li>
             ))}
-            <li>{authButton}</li>
+            <li>{authButton()}</li>
+
           </ul>
         </div>
       </div>

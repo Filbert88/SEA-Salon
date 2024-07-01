@@ -20,8 +20,6 @@ model User {
   phone       String       @unique
   password    String
   role        Role
-  isMember    Boolean   @default(false)
-  membershipExpiry DateTime?
   reviews     Review[]
   reservations Reservation[]
   createdAt   DateTime     @default(now())
