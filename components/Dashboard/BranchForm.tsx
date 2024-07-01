@@ -2,17 +2,39 @@
 import React, { useState } from "react";
 import Modal from "../Modal";
 import NoBranchStylistForm from "./StylistNForm";
+import Toast from "../Toast";
+import { ToastState } from "../Toast";
+import Loading from "../Loading";
 
 interface Stylist {
   id: number;
   name: string;
 }
 
-interface BranchFormProps {
-  unassignedStylists: Stylist[];
+interface Service {
+  id: number;
+  name: string;
 }
 
-const BranchForm: React.FC<BranchFormProps> = ({ unassignedStylists }) => {
+interface BranchFormProps {
+  unassignedStylists: Stylist[];
+  services: Service[];
+}
+
+interface FormErrors {
+  name?: string;
+  location?: string;
+  openingTime?: string;
+  closingTime?: string;
+  description?: string;
+  phone?: string;
+  stylists?: string;
+}
+
+const BranchForm: React.FC<BranchFormProps> = ({
+  unassignedStylists,
+  services,
+}) => {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [openingTime, setOpeningTime] = useState("");
@@ -21,6 +43,12 @@ const BranchForm: React.FC<BranchFormProps> = ({ unassignedStylists }) => {
   const [phone, setPhone] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedStylists, setSelectedStylists] = useState<number[]>([]);
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [toast, setToast] = useState<ToastState>({
+    isOpen: false,
+    message: "",
+    type: "info",
+  });
 
   const handleStylistSelect = (stylistId: number) => {
     if (selectedStylists.includes(stylistId)) {
@@ -30,10 +58,31 @@ const BranchForm: React.FC<BranchFormProps> = ({ unassignedStylists }) => {
     }
   };
 
-  console.log("apa ini",selectedStylists)
+  const validateForm = () => {
+    const newErrors: FormErrors = {};
+    if (!name) newErrors.name = "Branch name is required.";
+    if (!location) newErrors.location = "Location is required.";
+    if (!openingTime) newErrors.openingTime = "Opening time is required.";
+    if (!closingTime) newErrors.closingTime = "Closing time is required.";
+    if (!description) newErrors.description = "Description is required.";
+    if (!phone) newErrors.phone = "Phone number is required.";
+    if (selectedStylists.length === 0)
+      newErrors.stylists = "At least one stylist must be selected.";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  console.log("apa ini", selectedStylists);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    if (!validateForm()) {
+      setToast({
+        isOpen: true,
+        message: "Please fill all the field to add a new branch",
+        type: "error",
+      });
+      return;
+    }
 
     const branch = {
       name,
@@ -42,7 +91,7 @@ const BranchForm: React.FC<BranchFormProps> = ({ unassignedStylists }) => {
       closingTime,
       description,
       phone,
-      selectedStylists
+      selectedStylists,
     };
 
     const response = await fetch("/api/admin/branches", {
@@ -72,6 +121,7 @@ const BranchForm: React.FC<BranchFormProps> = ({ unassignedStylists }) => {
             onChange={(e) => setName(e.target.value)}
             className="text-black p-3 rounded"
           />
+          {errors.name && <p className="text-red">{errors.name}</p>}
           <input
             type="text"
             placeholder="Location"
@@ -79,6 +129,7 @@ const BranchForm: React.FC<BranchFormProps> = ({ unassignedStylists }) => {
             onChange={(e) => setLocation(e.target.value)}
             className="text-black p-3 rounded"
           />
+          {errors.location && <p className="text-red">{errors.location}</p>}
           <input
             type="text"
             placeholder="Opening Time"
@@ -86,6 +137,9 @@ const BranchForm: React.FC<BranchFormProps> = ({ unassignedStylists }) => {
             onChange={(e) => setOpeningTime(e.target.value)}
             className="text-black p-3 rounded"
           />
+          {errors.openingTime && (
+            <p className="text-red">{errors.openingTime}</p>
+          )}
           <input
             type="text"
             placeholder="Closing Time"
@@ -93,6 +147,9 @@ const BranchForm: React.FC<BranchFormProps> = ({ unassignedStylists }) => {
             onChange={(e) => setClosingTime(e.target.value)}
             className="text-black p-3 rounded"
           />
+          {errors.closingTime && (
+            <p className="text-red">{errors.closingTime}</p>
+          )}
           <input
             type="text"
             placeholder="Description"
@@ -100,6 +157,9 @@ const BranchForm: React.FC<BranchFormProps> = ({ unassignedStylists }) => {
             onChange={(e) => setDescription(e.target.value)}
             className="text-black p-3 rounded"
           />
+          {errors.description && (
+            <p className="text-red">{errors.description}</p>
+          )}
           <input
             type="text"
             placeholder="Phone Number"
@@ -107,6 +167,7 @@ const BranchForm: React.FC<BranchFormProps> = ({ unassignedStylists }) => {
             onChange={(e) => setPhone(e.target.value)}
             className="text-black p-3 rounded"
           />
+          {errors.phone && <p className="text-red">{errors.phone}</p>}
           <select
             onChange={(e) => {
               handleStylistSelect(parseInt(e.target.value));
@@ -122,6 +183,7 @@ const BranchForm: React.FC<BranchFormProps> = ({ unassignedStylists }) => {
               </option>
             ))}
           </select>
+          {errors.stylists && <p className="text-red">{errors.stylists}</p>}
           <div className="flex flex-wrap gap-2">
             {selectedStylists.map((stylistId) => {
               const stylist = unassignedStylists.find(
@@ -154,17 +216,23 @@ const BranchForm: React.FC<BranchFormProps> = ({ unassignedStylists }) => {
         </button>
         {unassignedStylists.length === 0 && (
           <div>
-            <p className="text-red-500">
+            <p className="text-red">
               No unassigned stylists available. Please add a stylist first.
             </p>
             <button
               onClick={() => setModalOpen(true)}
-              className="mt-2 p-2 bg-blue-500 text-white rounded"
+              className="mt-2 p-2 bg-blue text-white rounded"
             >
               Add Stylist
             </button>
           </div>
         )}
+        <Toast
+          isOpen={toast.isOpen}
+          message={toast.message}
+          type={toast.type}
+          closeToast={() => setToast({ ...toast, isOpen: false })}
+        />
       </form>
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
         <NoBranchStylistForm />
