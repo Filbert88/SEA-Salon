@@ -24,11 +24,11 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    return NextResponse.json({ data }, { status: 200 });
+    return new NextResponse(JSON.stringify({ data }), { status: 200 });
   } catch (error) {
     console.error("Failed assigning stylists: ", error);
-    return NextResponse.json(
-      { error: "Failed assigning stylists" },
+    return new NextResponse(
+      JSON.stringify({ error: "Failed assigning stylists" }),
       { status: 500 }
     );
   }
