@@ -128,7 +128,7 @@ const DashboardPage = ({
         <div className="text-white text-center mt-12 text-2xl">Ensure to reload this page after adding, editing and deleting data</div>
 
         {activeForm === "add" && (
-          <div className="flex flex-col gap-8">
+          <div className="mt-8 flex flex-col gap-8">
             <ServiceForm branches={branches} setLoading={setLoading} setToast={setToast} />
             <AddServiceToBranch services={services} branches={branches} setLoading={setLoading} setToast={setToast} />
             <AssignStylistForm
