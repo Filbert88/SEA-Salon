@@ -10,8 +10,15 @@ import BranchEditForm from "./EditBranchForm";
 import Loading from "../Loading";
 import Toast from "../Toast";
 import { ToastState } from "../Toast";
+import DeleteReview from "./DeleteReview";
+import DeleteBranch from "./DeleteBranch";
+import ReservationDetails from "@/lib/type";
+import DeleteReservation from "./DeleteReservation";
+import DeleteService from "./DeleteService";
+import DeleteStylist from "./DeleteStylist";
+import AddServiceToBranch from "./AddService";
 
-interface Stylist {
+export interface Stylist {
   id: number;
   name: string;
   imageUrl: string | null;
@@ -28,7 +35,7 @@ interface Branch {
   description: string;
 }
 
-interface Service {
+export interface Service {
   id: number;
   name: string;
   description: string;
@@ -36,11 +43,26 @@ interface Service {
   imageUrl: string | null;
 }
 
+interface Customer {
+  fullName: string;
+  email: string;
+}
+
+interface Review {
+  id:number;
+  starRating: number;
+  comment: string;
+  createdAt: Date;
+  customer: Customer;
+}
+
 export interface DashboardPageProps {
   branches: Branch[];
   unassignedStylists: Stylist[];
   services: Service[];
   stylists: Stylist[];
+  reviews: Review[]
+  reservations: ReservationDetails[];
 }
 
 const DashboardPage = ({
@@ -48,6 +70,8 @@ const DashboardPage = ({
   unassignedStylists,
   services,
   stylists,
+  reviews,
+  reservations
 }: DashboardPageProps) => {
   const [activeForm, setActiveForm] = useState<
     "add" | "edit" | "delete" | null
@@ -65,7 +89,7 @@ const DashboardPage = ({
 
   return (
     <div className="pt-32 flex flex-col items-center px-10">
-      <div className="max-w-5xl w-full shadow-lg rounded-lg p-6">
+      <div className="max-w-5xl w-full shadow-lg rounded-lg">
         <h1 className="text-3xl font-bold mb-6 text-center text-white">
           Admin Dashboard
         </h1>
@@ -105,6 +129,7 @@ const DashboardPage = ({
         {activeForm === "add" && (
           <div className="flex flex-col gap-8">
             <ServiceForm branches={branches} setLoading={setLoading} setToast={setToast} />
+            <AddServiceToBranch services={services} branches={branches} setLoading={setLoading} setToast={setToast} />
             <AssignStylistForm
               branches={branches}
               unassignedStylists={unassignedStylists}
@@ -131,7 +156,11 @@ const DashboardPage = ({
 
         {activeForm === "delete" && (
           <div>
-            <p>Delete form</p>
+            <DeleteReview reviews={reviews} setLoading={setLoading} setToast={setToast} />
+            <DeleteBranch branches={branches} setLoading={setLoading} setToast={setToast} />
+            <DeleteReservation reservations={reservations} setLoading={setLoading} setToast={setToast} />
+            <DeleteService services={services} setLoading={setLoading} setToast={setToast} />
+            <DeleteStylist stylists={stylists} setLoading={setLoading} setToast={setToast} />
           </div>
         )}
       </div>

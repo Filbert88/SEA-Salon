@@ -1,8 +1,16 @@
 import React from "react";
 import BranchCard from "@/components/Branch/BranchCard";
 import { db } from "@/lib/db";
+import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
 export default async function BranchPage() {
+  const session = await getServerSession(authOptions);
+  
+  if(session?.user.role === "ADMIN"){
+    redirect("/dashboard");
+  }
   const branches = await db.branch.findMany({
     select: {
       name: true,

@@ -14,6 +14,10 @@ export default async function BookingWrapper() {
   if(!session){
     redirect("/signin");
   }
+
+  if(session.user.role === "ADMIN"){
+    redirect("/dashboard");
+  }
   const branches = await db.branch.findMany({
     select: {
       name: true,

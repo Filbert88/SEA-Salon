@@ -11,6 +11,7 @@ export async function POST(req: NextRequest) {
       description,
       phone,
       selectedStylists,
+      selectedServices
     } = await req.json();
 
     if (!name || !location || !openingTime || !closingTime || !phone) {
@@ -46,11 +47,27 @@ export async function POST(req: NextRequest) {
               });
             } catch (updateError) {
               console.error(`Failed to update stylist ${stylistId}:`, updateError);
-              throw updateError; // Rethrow to be caught by transaction error handling
+              throw updateError; 
             }
           })
         );
         console.log("Updated stylists:", updates);
+      }
+
+      if (selectedServices && selectedServices.length > 0) {
+        await Promise.all(selectedServices.map(async (serviceId: number) => {
+          try {
+            return await prisma.branchService.create({
+              data: {
+                branchId: branch.id,
+                serviceId: serviceId
+              }
+            });
+          } catch (createError) {
+            console.error(`Failed to create branch service link for service ${serviceId}:`, createError);
+            throw createError;
+          }
+        }));
       }
 
       return branch;

@@ -11,6 +11,10 @@ export default async function ReservationWrapper() {
     redirect("/signin");
   }
 
+  if(session.user.role === "ADMIN"){
+    redirect("/dashboard");
+  }
+  
   const reservations = await db.reservation.findMany({
     where: { userId: Number(session.user.id) },
     include: {
