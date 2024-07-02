@@ -430,17 +430,17 @@ export default function BookingPage({ branches }: BranchesProps) {
           {isSummaryReady && (
             <div className="w-full bg-gray-800 p-4 mt-8 rounded-lg">
               <h3 className="text-xl font-bold text-white mb-4">Summary</h3>
+              <p>
+                {new Date(date).toLocaleDateString("en-GB", {
+                  weekday: "short",
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                })}{" "}
+                @ {time} with {stylist?.name}
+              </p>
               <div className="flex flex-col md:flex-row justify-between text-white">
                 <div>
-                  <p>
-                    {new Date(date).toLocaleDateString("en-GB", {
-                      weekday: "short",
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                    })}{" "}
-                    @ {time} with {stylist?.name}
-                  </p>
                   <div className="mt-4">
                     <p className="text-white">Description</p>
                     <p className="text-white">Stylist Rates</p>

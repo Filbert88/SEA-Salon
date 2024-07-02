@@ -10,7 +10,7 @@ const NotFoundPage: NextPage = () => {
       <Head>
         <title>404 - Page Not Found</title>
       </Head>
-      <div className="flex items-center justify-center min-h-screen bg-black">
+      <div className="flex items-center justify-center min-h-screen bg-black px-10">
         <div className="text-center">
           <h1 className="text-6xl font-bold text-red">ERROR 404</h1>
           <p className="text-xl font-light text-white">

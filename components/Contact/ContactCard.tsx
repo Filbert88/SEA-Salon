@@ -6,16 +6,17 @@ import Link from "next/link"; // Importing Link from next/link
 interface cardProps {
   title: string;
   phoneNumber: string;
+  imageUrl: string;
 }
 
-const ContactCard = ({ title, phoneNumber }: cardProps) => {
+const ContactCard = ({ title, phoneNumber, imageUrl }: cardProps) => {
   return (
     <div className="cursor-pointer relative">
       <div className="flex flex-col items-center">
         <div className="w-[250px] relative">
           <Image
             className="aspect-[2/3] w-full rounded-xl"
-            src="/tes.jpg"
+            src={imageUrl}
             alt={title}
             height={375}
             width={250}

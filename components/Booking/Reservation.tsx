@@ -43,7 +43,7 @@ export default function ReservationsPage({ reservations }: ReservationsProps) {
           {reservations.map((reservation) => (
             <li
               key={reservation.id}
-              className="text-black bg-white shadow-lg rounded-lg p-4 mb-4"
+              className="text-black bg-custom-green shadow-lg rounded-lg p-4 mb-4"
             >
               <h2 className="text-xl font-bold">
                 Reservation at {reservation.branchName}
