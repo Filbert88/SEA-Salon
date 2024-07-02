@@ -13,7 +13,7 @@ export default async function DashboardWrapper() {
     return null;
   }
 
-  const branchesPromise = db.branch.findMany({
+  const branches = await db.branch.findMany({
     select: {
       id: true,
       name: true,
@@ -23,50 +23,33 @@ export default async function DashboardWrapper() {
       phone: true,
       description: true,
     },
-  });
-
-  const unassignedStylistsPromise = db.stylist
-    .findMany({
-      where: { branchId: null },
-      select: { id: true, name: true, imageUrl: true, price: true },
-    })
-    .then((stylists) =>
-      stylists.map((stylist) => ({
-        ...stylist,
-        price: stylist.price.toString(),
-        imageUrl: stylist.imageUrl || null,
-      }))
-    );
-
-  const [branches, unassignedStylists] = await Promise.all([
-    branchesPromise,
-    unassignedStylistsPromise,
-  ]);
-
-  const branchesWithFormattedDates = branches.map((branch) => ({
+  }).then(branches => branches.map(branch => ({
     ...branch,
     openingTime: branch.openingTime.toISOString(),
     closingTime: branch.closingTime.toISOString(),
-  }));
+  })));
 
-  const servicesPromise = db.service
-    .findMany({
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        price: true,
-        imageUrl: true,
-      },
-    })
-    .then((services) =>
-      services.map((service) => ({
-        ...service,
-        price: service.price.toString(),
-      }))
-    );
+  const unassignedStylists = await db.stylist.findMany({
+    where: { branchId: null },
+    select: { id: true, name: true, imageUrl: true, price: true },
+  }).then(stylists => stylists.map(stylist => ({
+    ...stylist,
+    price: stylist.price.toString(),
+    imageUrl: stylist.imageUrl || null,
+  })));
 
-  const services = await servicesPromise;
+  const services = await db.service.findMany({
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      price: true,
+      imageUrl: true,
+    },
+  }).then(services => services.map(service => ({
+    ...service,
+    price: service.price.toString(),
+  })));
 
   const allStylist = db.stylist
     .findMany({
@@ -116,7 +99,7 @@ export default async function DashboardWrapper() {
 
   return (
     <DashboardPage
-      branches={branchesWithFormattedDates}
+      branches={branches}
       unassignedStylists={unassignedStylists}
       services={services}
       stylists={stylists}

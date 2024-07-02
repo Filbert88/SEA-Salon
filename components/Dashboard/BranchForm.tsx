@@ -34,7 +34,6 @@ interface FormErrors {
 }
 
 const validateTimeFormat = (time:string) => {
-  // Regular expression to match HH:mm format (24-hour)
   const regex = /^([01]?[0-9]|2[0-3]):([0-5][0-9])$/;
   return regex.test(time);
 };
@@ -155,8 +154,18 @@ const BranchForm: React.FC<BranchFormProps> = ({
     });
 
     if (response.ok) {
+      setToast({
+        isOpen: true,
+        message: "Branch added successfully",
+        type: "success",
+      });
       console.log("Branch added successfully");
     } else {
+      setToast({
+        isOpen: true,
+        message: "Error adding branch",
+        type: "error",
+      });
       console.error("Error adding branch");
     }
 
@@ -292,7 +301,7 @@ const BranchForm: React.FC<BranchFormProps> = ({
               ))}
             </select>
             {errors.stylists && <p className="text-red">{errors.stylists}</p>}
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 mt-2">
               {selectedStylists.map((stylistId) => {
                 const stylist = unassignedStylists.find(
                   (s) => s.id === stylistId
