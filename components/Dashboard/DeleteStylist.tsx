@@ -57,7 +57,7 @@ const DeleteStylist = ({
 
   return (
     <div className="mt-8">
-      <div className="text-center text-3xl font-bold">All Stylists</div>
+      <div className="text-center text-3xl font-bold text-white">All Stylists</div>
       <div className="p-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {stylistList.map((stylist) => (

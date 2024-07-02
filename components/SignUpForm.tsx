@@ -111,7 +111,7 @@ const SignUp: React.FC = () => {
   return (
     <div className="flex w-full max-w-[350px] flex-col gap-5 xl:gap-7">
       <form onSubmit={handleSubmit} className="flex flex-col items-center">
-        <div className="text-4xl mb-6 font-bold">Sign Up</div>
+        <div className="text-4xl mb-6 font-bold text-white">Sign Up</div>
         <div className="flex flex-col space-y-6 font-normal w-full">
           <input
             placeholder="fullName"

@@ -110,7 +110,7 @@ const AssignStylistForm = ({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-xl font-semibold">Assign Stylists to Branch</h2>
+      <h2 className="text-xl font-semibold text-white">Assign Stylists to Branch</h2>
       <div className="flex flex-col text-black gap-2">
         {unassignedStylists.length > 0 ? (
           <div className="flex flex-wrap gap-2">
@@ -151,7 +151,7 @@ const AssignStylistForm = ({
       </div>
       <button
         type="submit"
-        className="border-2 border-custom-green p-3 rounded-lg"
+        className="border-2 border-custom-green p-3 rounded-lg text-white"
       >
         Assign Stylists
       </button>

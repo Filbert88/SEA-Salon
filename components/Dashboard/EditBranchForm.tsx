@@ -152,7 +152,7 @@ const BranchEditForm = ({ branches, setLoading, setToast }: BranchesProps) => {
             </div>
             <button
               type="submit"
-              className="border-2 border-custom-green p-3 rounded-lg"
+              className="border-2 border-custom-green p-3 rounded-lg text-white"
             >
               Update Branch
             </button>

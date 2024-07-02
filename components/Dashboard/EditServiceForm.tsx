@@ -137,7 +137,7 @@ const ServiceEditForm = ({ services, setLoading, setToast }: ServiceProps) => {
             </div>
             <button
               type="submit"
-              className="border-2 border-custom-green p-3 rounded-lg"
+              className="border-2 border-custom-green p-3 rounded-lg text-white"
             >
               Update Service
             </button>

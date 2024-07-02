@@ -49,7 +49,7 @@ const DeleteReservation = ({ reservations, setLoading, setToast }: ReservationPr
 
   return (
     <div className="mt-8">
-      <div className="text-center text-3xl font-bold">All Reservations</div>
+      <div className="text-center text-3xl font-bold text-white">All Reservations</div>
       <div className="p-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {reservationList.map((reservation) => (

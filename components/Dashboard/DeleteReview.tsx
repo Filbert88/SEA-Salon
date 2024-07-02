@@ -71,7 +71,7 @@ const DeleteReview: React.FC<DeleteReviewProps> = ({
 
   return (
     <div className="mt-8">
-      <div className="text-center text-3xl font-bold">All Reviews</div>
+      <div className="text-center text-3xl font-bold text-white">All Reviews</div>
       <div className="p-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {reviewList.map((review, index) => (

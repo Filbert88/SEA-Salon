@@ -166,7 +166,7 @@ const BranchForm: React.FC<BranchFormProps> = ({
   return (
     <div>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <h2 className="text-xl font-semibold">Add New Branch</h2>
+        <h2 className="text-xl font-semibold text-white">Add New Branch</h2>
         <div className="flex flex-col gap-2">
           <input
             type="text"
@@ -186,7 +186,7 @@ const BranchForm: React.FC<BranchFormProps> = ({
           {errors.location && <p className="text-red">{errors.location}</p>}
           <input
             type="text"
-            placeholder="Opening Time"
+            placeholder="Opening Time (09:00)"
             value={openingTime}
             onChange={(e) => setOpeningTime(e.target.value)}
             className="text-black p-3 rounded"
@@ -196,7 +196,7 @@ const BranchForm: React.FC<BranchFormProps> = ({
           )}
           <input
             type="text"
-            placeholder="Closing Time"
+            placeholder="Closing Time (20:00)"
             value={closingTime}
             onChange={(e) => setClosingTime(e.target.value)}
             className="text-black p-3 rounded"
@@ -223,7 +223,7 @@ const BranchForm: React.FC<BranchFormProps> = ({
           />
           {errors.phone && <p className="text-red">{errors.phone}</p>}
           <div>
-            <label htmlFor="services" className="block mb-2">
+            <label htmlFor="services" className="block mb-2 text-white mt-1">
               Services
             </label>
             <select
@@ -275,7 +275,7 @@ const BranchForm: React.FC<BranchFormProps> = ({
             </div>
           </div>
           <div>
-            <div>Stylists</div>
+            <div className="text-white mt-1">Stylists</div>
             <select
               onChange={(e) => {
                 handleStylistSelect(parseInt(e.target.value));
@@ -319,7 +319,7 @@ const BranchForm: React.FC<BranchFormProps> = ({
 
         <button
           type="submit"
-          className="border-2 border-custom-green p-3 rounded-lg"
+          className="border-2 border-custom-green p-3 rounded-lg text-white"
         >
           Add Branch
         </button>

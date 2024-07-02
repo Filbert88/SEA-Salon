@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useRouter ,redirect} from "next/navigation";
+import { useRouter, redirect } from "next/navigation";
 import Image from "next/image";
 import { signIn, useSession } from "next-auth/react";
 import Toast from "./Toast";
@@ -77,11 +77,11 @@ const Signin: React.FC = () => {
   };
 
   useEffect(() => {
-    if (status === 'authenticated') {
-      if (session?.user?.role === 'ADMIN') {
-        router.push('/dashboard');
+    if (status === "authenticated") {
+      if (session?.user?.role === "ADMIN") {
+        router.push("/dashboard");
       } else {
-        router.push('/');
+        router.push("/");
       }
     }
   }, [session, status, router]);
@@ -123,12 +123,12 @@ const Signin: React.FC = () => {
     }
   };
 
-  if(loading){
+  if (loading) {
     return <Loading />;
   }
 
   return (
-    <div className="relative bottom-20 flex w-full max-w-[350px] flex-col gap-5 sm:bottom-0 lg:bottom-0 xl:gap-7">
+    <div className="flex w-full max-w-[350px] flex-col gap-5 xl:gap-7">
       <form onSubmit={handleSubmit} className="flex flex-col items-center">
         <div className="text-4xl mb-6 font-bold text-white">Sign In</div>
         <div className="flex flex-col font-normal items-center w-full">

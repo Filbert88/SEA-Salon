@@ -73,7 +73,7 @@ const NoBranchStylistForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-xl font-semibold">Add New Stylist</h2>
+      <h2 className="text-xl font-semibold text-white">Add New Stylist</h2>
       <div className="flex flex-col text-black gap-2">
         <input
           type="text"
@@ -93,7 +93,7 @@ const NoBranchStylistForm = () => {
       </div>
       <button
         type="submit"
-        className="border-2 border-custom-green p-3 rounded-lg"
+        className="border-2 border-custom-green p-3 rounded-lg text-white"
       >
         Add Stylist
       </button>

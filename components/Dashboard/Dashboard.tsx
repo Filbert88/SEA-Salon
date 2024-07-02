@@ -98,7 +98,7 @@ const DashboardPage = ({
             className={`px-4 py-2 rounded ${
               activeForm === "add"
                 ? "bg-custom-green text-black"
-                : "border-2 border-custom-green"
+                : "border-2 border-custom-green text-white"
             }`}
             onClick={() => setActiveForm("add")}
           >
@@ -108,7 +108,7 @@ const DashboardPage = ({
             className={`px-4 py-2 rounded ${
               activeForm === "edit"
                 ? "bg-custom-green text-black"
-                : "border-2 border-custom-green"
+                : "border-2 border-custom-green text-white"
             }`}
             onClick={() => setActiveForm("edit")}
           >
@@ -118,7 +118,7 @@ const DashboardPage = ({
             className={`px-4 py-2 rounded ${
               activeForm === "delete"
                 ? "bg-custom-green text-black"
-                : "border-2 border-custom-green"
+                : "border-2 border-custom-green text-white"
             }`}
             onClick={() => setActiveForm("delete")}
           >

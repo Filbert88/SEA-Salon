@@ -129,10 +129,10 @@ const AddServiceToBranch: React.FC<BranchFormProps> = ({
             </option>
           ))}
         </select>
-        {errors.service && <p className="text-red-500">{errors.service}</p>}
+        {errors.service && <p className="text-red">{errors.service}</p>}
 
         <div>
-          <p>Branches:</p>
+          <p className="text-white">Branches:</p>
           {branches.map(branch => (
             <div key={branch.id} className="gap-2">
               <input
@@ -141,13 +141,13 @@ const AddServiceToBranch: React.FC<BranchFormProps> = ({
                 checked={selectedBranches.includes(branch.id)}
                 onChange={() => handleBranchSelect(branch.id)}
               />
-              <label htmlFor={`branch-${branch.id}`} className="ml-2">{branch.name}</label>
+              <label htmlFor={`branch-${branch.id}`} className="ml-2 text-white">{branch.name}</label>
             </div>
           ))}
           {errors.branches && <p className="text-red-500">{errors.branches}</p>}
         </div>
 
-        <button type="submit" className="border-2 border-custom-green p-3 rounded-lg">
+        <button type="submit" className="border-2 text-white border-custom-green p-3 rounded-lg">
           Add Service
         </button>
       </form>

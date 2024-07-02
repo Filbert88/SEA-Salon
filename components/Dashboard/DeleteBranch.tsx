@@ -17,6 +17,11 @@ interface DeleteBranchProps {
   setToast: (toast: ToastState) => void;
 }
 
+const formatTime = (isoString: string) => {
+  const date = new Date(isoString);
+  return date.toLocaleTimeString([], { timeStyle: 'short' });
+};
+
 const DeleteBranch = ({
   branches,
   setLoading,
@@ -60,7 +65,7 @@ const DeleteBranch = ({
 
   return (
     <div className="mt-8">
-      <div className="text-center text-3xl font-bold">All Branches</div>
+      <div className="text-center text-3xl font-bold text-white">All Branches</div>
       <div className="p-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {branchList.map((branch, index) => (
@@ -84,11 +89,11 @@ const DeleteBranch = ({
               </p>
               <p className="text-gray-800">
                 <span className="font-medium">Opening Time:</span>{" "}
-                {branch.openingTime}
+                {formatTime(branch.openingTime)}
               </p>
               <p className="text-gray-800">
                 <span className="font-medium">Closing Time:</span>{" "}
-                {branch.closingTime}
+                {formatTime(branch.closingTime)}
               </p>
             </div>
           ))}
