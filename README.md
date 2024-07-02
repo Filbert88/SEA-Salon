@@ -8,13 +8,16 @@ Introducing SEA Salon, a rising star in the salon industry known for their outst
 and excellent reviews. With a rapidly growing clientele and a stellar reputation, SEA Salon is your
 premier destination for all your beauty needs. Because of this, SEA Salon has gained a lot of
 customers. To handle the new customers, the SEA Salon management team has decided to
-develop a new SEA Salon Application.
+develop a new SEA Salon Application. The website is accessible at [SEA Salon](https://sea-salon-six.vercel.app/).
 
 # Purpose
 The purpose of making this project is to create a salon website for submission to the Compfest 2024 Academy and utilizing modern technologies like NextJS to improve my knowledge.
 
 # Features
-This salon app enables users to book, add, edit, and delete services, facilitating easy management for the admin across multiple branches. Additionally, admins can manage branch details, add,edit dan delete stylist, and also delete reviews and reservations. When making a booking, users can choose their preferred stylist and select one or more services at the desired branch. After selecting a stylist and time, the app will notify users if the reservation is possible or if there is a scheduling conflict with another client who has booked the same stylist at the same time. User can also view their past reservations in my reservation page.
+This salon app enables users to book, add, edit, and delete services, facilitating easy management for the admin across multiple branches. Additionally, admins can manage branch details, and add, edit, and delete stylists, as well as delete reviews and reservations. When making a booking, users can choose their preferred stylist and select one or more services at the desired branch. After selecting a stylist and time, the app will notify users if the reservation is possible or if there is a scheduling conflict with another client who has booked the same stylist at the same time. Users can also view their past reservations on the "My Reservations" page. This website also has a responsive design, making it easy for users to access it anywhere and anytime. It also applies authentication for user security and utilizes the Cloudinary API to handle image uploads.
+
+# Restriction
+- Admins need to reload the page after adding, editing, or deleting data to ensure that the displayed data is always up-to-date.
 
 # Frameworks/Tools Used
 - NextJS App Router (Fullstack Framework)
@@ -27,6 +30,7 @@ This salon app enables users to book, add, edit, and delete services, facilitati
 - Postgresql (Database)
 - Prisma (Object Relational Mapper)
 - bcrypt (Hashing Passwords)
+- React Slick (Pagination)
 
 # How to Run
 To access the app, you can just simply go to:
