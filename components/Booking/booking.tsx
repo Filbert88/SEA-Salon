@@ -430,7 +430,7 @@ export default function BookingPage({ branches }: BranchesProps) {
           {isSummaryReady && (
             <div className="w-full bg-gray-800 p-4 mt-8 rounded-lg">
               <h3 className="text-xl font-bold text-white mb-4">Summary</h3>
-              <p>
+              <p className="text-white">
                 {new Date(date).toLocaleDateString("en-GB", {
                   weekday: "short",
                   day: "2-digit",
