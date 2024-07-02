@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h1 align="center">SEA Salon Management System</h1>
 
-## Getting Started
+![GitHub last commit](https://img.shields.io/github/last-commit/Filbert88/SEA-Salon)
 
-First, run the development server:
+# Description
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Introducing SEA Salon, a rising star in the salon industry known for their outstanding services
+and excellent reviews. With a rapidly growing clientele and a stellar reputation, SEA Salon is your
+premier destination for all your beauty needs. Because of this, SEA Salon has gained a lot of
+customers. To handle the new customers, the SEA Salon management team has decided to
+develop a new SEA Salon Application.
+
+# Purpose
+The purpose of making this project is to create a salon website for submission to the Compfest 2024 Academy and utilizing modern technologies like NextJS to improve my knowledge.
+
+# Features
+This salon app enables users to book, add, edit, and delete services, facilitating easy management for the admin across multiple branches. Additionally, admins can manage branch details, add,edit dan delete stylist, and also delete reviews and reservations. When making a booking, users can choose their preferred stylist and select one or more services at the desired branch. After selecting a stylist and time, the app will notify users if the reservation is possible or if there is a scheduling conflict with another client who has booked the same stylist at the same time. User can also view their past reservations in my reservation page.
+
+# Frameworks/Tools Used
+- NextJS App Router (Fullstack Framework)
+- React (JS Library)
+- TailwindCSS (CSS Framework)
+- Typescript (Typesafe for JavaScript)
+- NextAuth (Authentication)
+- Cloudinary (Cloud storage for image)
+- Aiven (Database Provider)
+- Postgresql (Database)
+- Prisma (Object Relational Mapper)
+- bcrypt (Hashing Passwords)
+
+# How to Run
+To access the app, you can just simply go to:
+- [sea-salon-six.vercel.app](https://sea-salon-six.vercel.app/)
+
+To run it locally, you will need to add the following environment variables to your .env file:
+```shell
+DATABASE_URL=your-database-url
+NEXTAUTH_SECRET=your-nextauth-secret
+CLOUDINARY_CLOUD_NAME=your-cloudinary-cloud-name
+CLOUDINARY_API_KEY=your-cloudinary-api-key
+CLOUDINARY_API_SECRET=your-cloudinary-api-secret
+NEXT_PUBLIC_CLOUDINARY_API_KEY=your-cloudinary-api-key
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=your-cloudinary-cloud-name
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+.env for development of this project: 
+```shell
+DATABASE_URL="postgres://avnadmin:AVNS_0DBr8NDQWJIIE_Y7dzm@pg-2ef7d7f5-sea-salon-db.c.aivencloud.com:21548/defaultdb?sslmode=require"
+NEXTAUTH_SECRET="seasaloncompfest2024"
+CLOUDINARY_CLOUD_NAME=dkrara5uf
+CLOUDINARY_API_KEY=734323139493683
+CLOUDINARY_API_SECRET=-WhtOSdBvz0rTJLu-aTvlLNJNaI
+NEXT_PUBLIC_CLOUDINARY_API_KEY=734323139493683
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=dkrara5uf
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# Installation 
+Follow these steps:
+1. Clone this repository :
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```shell
+git clone https://github.com/Filbert88/SEA-Salon.git
+```
 
-## Learn More
+2. Navigate to the src directory of the program by running the following command in the terminal:
 
-To learn more about Next.js, take a look at the following resources:
+```shell
+cd SEA-Salon
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Install the required packages:
+```shell
+npm install
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+4. Set up your Prisma database:
+```shell
+npx prisma migrate dev
+```
+5. Start the development server:
+```shell
+npm run dev
+```
+The application should now be running at http://localhost:3000.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+# Additonal features
+- not-found page
+- loading animation
