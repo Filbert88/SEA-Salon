@@ -32,8 +32,8 @@ const Card = ({ title , href, imageUrl} : cardProps) => {
             width={250}
             objectFit="cover"
           />
-          <div className="absolute left-0 right-0 bottom-2 flex items-center justify-center">
-            <span className="text-white text-xl font-bold p-2 rounded-md">
+          <div className="text-center mt-1">
+            <span className="text-white text-xl font-bold p-2 rounded-md text-center">
               {title}
             </span>
           </div>

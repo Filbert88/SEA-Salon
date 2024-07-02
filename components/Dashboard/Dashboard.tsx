@@ -125,6 +125,7 @@ const DashboardPage = ({
             Delete Data
           </button>
         </div>
+        <div className="text-white text-center mt-12 text-2xl">Ensure to reload this page after adding, editing and deleting data</div>
 
         {activeForm === "add" && (
           <div className="flex flex-col gap-8">
@@ -156,8 +157,6 @@ const DashboardPage = ({
 
         {activeForm === "delete" && (
           <div className="mt-16">
-            <p className="text-center text-2xl text-custom-green">Remember to always refresh the page after deleting data.</p>
-            <p className="text-center text-2xl text-custom-green">Thank youu</p>
             <DeleteReview reviews={reviews} setLoading={setLoading} setToast={setToast} />
             <DeleteBranch branches={branches} setLoading={setLoading} setToast={setToast} />
             <DeleteReservation reservations={reservations} setLoading={setLoading} setToast={setToast} />
